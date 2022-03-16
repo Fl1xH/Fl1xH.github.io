@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SysAdmin on Fl1x&#39;s Blog</title>
+    <link>https://fl1xh.github.io/tags/sysadmin/</link>
+    <description>Recent content in SysAdmin on Fl1x&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Wed, 16 Mar 2022 22:43:04 +0100</lastBuildDate><atom:link href="https://fl1xh.github.io/tags/sysadmin/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SCP Cheat Sheet</title>
+      <link>https://fl1xh.github.io/posts/scp_cheat_sheet/</link>
+      <pubDate>Wed, 16 Mar 2022 22:43:04 +0100</pubDate>
+      
+      <guid>https://fl1xh.github.io/posts/scp_cheat_sheet/</guid>
+      <description>Copying a file to the remote system using scp command scp file user@host:/path/to/file	Copying a file from the remote system using scp command scp user@host:/path/to/file /local/path/to/file Copying multiple files using scp command scp file1 file2 user@host:/path/to/directory	Copying an entire directory with scp command scp -r /path/to/directory user@host:/path/to/directory	Conditions -r # transfer directory -v # see the transfer details -C # copy files with compression -l 800 # limit bandwith with 800 -p # preserving the original attributes of the copied files -P # connection port -q # hidden the output</description>
+    </item>
+    
+  </channel>
+</rss>
