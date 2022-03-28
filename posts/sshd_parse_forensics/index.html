@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>SSHD Logs Parse Forensics // Fl1x&#39;s Blog</title>
+    <link rel="shortcut icon" href="/favicon.png" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.92.2" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Fl1x" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://fl1xh.github.io/css/main.min.1bc859b2ee25b22dbec58da2d1c0e9938e1e25416538a5ebf1505ce69f7a3327.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SSHD Logs Parse Forensics"/>
+<meta name="twitter:description" content="Introduction Basic Log stats  Number of log entries Services Logs   SSHD Logs Parse  Logins Port Scanners   Conclusion    Introduction In this article, we will see how to analyze SSHD (SSH server-side) logs with basic command-line tools &ldquo;grep, cat, wc, head, tail, awk&rdquo; to potentially find any suspicious requests on our SSH server.
+By default, we have the SSHD logs in /var/log/auth."/>
+
+    <meta property="og:title" content="SSHD Logs Parse Forensics" />
+<meta property="og:description" content="Introduction Basic Log stats  Number of log entries Services Logs   SSHD Logs Parse  Logins Port Scanners   Conclusion    Introduction In this article, we will see how to analyze SSHD (SSH server-side) logs with basic command-line tools &ldquo;grep, cat, wc, head, tail, awk&rdquo; to potentially find any suspicious requests on our SSH server.
+By default, we have the SSHD logs in /var/log/auth." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fl1xh.github.io/posts/sshd_parse_forensics/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-03-28T11:05:32+02:00" />
+<meta property="article:modified_time" content="2022-03-28T11:05:32+02:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://fl1xh.github.io/"><img class="app-header-avatar" src="/pp.jpg" alt="Fl1x" /></a>
+      <h1>Fl1x&#39;s Blog</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Posts</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/about/">About</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/redteam/">RedTeam</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/blueteam/">BlueTeam</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/writeups/">Writeups</a>
+      </nav>
+      <p>Here you can find my infosec, sysadmin articles and writeups</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/fl1x_HR" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://github.com/Fl1xH" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+          <a href="https://www.hackthebox.com/home/users/profile/104662" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-box">
+  <title>Hackthebox</title>
+  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line>
+</svg>
+          </a>
+        
+          <a href="https://blueteamlabs.online/public/user/3c4848eb92c6232d4eede7" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-cloud">
+  <title>Blue Teams Labs Online</title>
+  <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+</svg>
+          </a>
+        
+          <a href="https://cyberdefenders.org/profile/Fl1xH" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-shield">
+  <title>Cyberdefenders.org</title>
+  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+</svg>
+          </a>
+        
+          <a href="https://fl1xh.github.io/feed.xml" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-rss">
+  <title>RSS Feed</title>
+  <path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">SSHD Logs Parse Forensics</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Mar 28, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          5 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://fl1xh.github.io/tags/blueteam/">BlueTeam</a>
+              <a class="tag" href="https://fl1xh.github.io/tags/cheat-sheet/">Cheat-Sheet</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <hr>
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#basic-log-stats">Basic Log stats</a>
+      <ul>
+        <li><a href="#number-of-log-entries">Number of log entries</a></li>
+        <li><a href="#services-logs">Services Logs</a></li>
+      </ul>
+    </li>
+    <li><a href="#sshd-logs-parse">SSHD Logs Parse</a>
+      <ul>
+        <li><a href="#logins">Logins</a></li>
+        <li><a href="#port-scanners">Port Scanners</a></li>
+      </ul>
+    </li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+<hr>
+<h2 id="introduction">Introduction</h2>
+<p>In this article, we will see how to analyze SSHD (SSH server-side) logs with basic command-line tools &ldquo;<code>grep</code>, <code>cat</code>, <code>wc</code>, <code>head</code>, <code>tail</code>, <code>awk</code>&rdquo; to potentially find any suspicious requests on our SSH server.</p>
+<p>By default, we have the SSHD logs in <code>/var/log/auth.log</code> . This file contains not only SSHD logs but also CRON, PAM logs.</p>
+<h2 id="basic-log-stats">Basic Log stats</h2>
+<p>First, we can perform basic stats on our log file:</p>
+<ul>
+<li>Number of log entries</li>
+<li>First and last entry</li>
+<li>CRON, SSHD, SUDO entries</li>
+</ul>
+<h3 id="number-of-log-entries">Number of log entries</h3>
+<p>We started with basic print number of lines in the log file with the &ldquo;<code>wc</code>&rdquo; command.</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cat auth.log | wc -l
+<span style="color:#00afaf">276</span>
+</code></pre></div><p>On my home server, there is only 276 log entries but on a server accessible from the Internet, there will be much more amount of data, especially if the ssh port is open due to bots or malicious actors.</p>
+<p>We can get more informations like the first entry and the last entry on the log file to get the timeline information (beggining, ending).</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cat auth.log | awk <span style="color:#00afaf">&#39;NR==1; END{print}&#39;</span>
+Mar <span style="color:#00afaf">27</span> 00:09:01 x230 CRON[756922]: pam_unix(cron:session): session opened <span style="color:#5f8700">for</span> user root(<span style="color:#0087ff">uid</span>=0) by (<span style="color:#0087ff">uid</span>=0)  <span style="color:#4e4e4e">#First line</span>
+Mar <span style="color:#00afaf">28</span> 13:17:01 x230 CRON[2692534]: pam_unix(cron:session): session closed <span style="color:#5f8700">for</span> user root	<span style="color:#4e4e4e">#Last line</span>
+</code></pre></div><p>As said in the introduction, the log file does not only contain information from SSHD but also from CRON, SUDO command and PAM, so we can also classify the data by type of service with the &ldquo;<code>grep</code>&rdquo; command.</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cat auth.log | grep <span style="color:#00afaf">&#34;sshd&#34;</span> | wc -l
+<span style="color:#00afaf">7</span>
+</code></pre></div><p>Here we get number of entries for SSHD service on the <code>auth.log</code> file.</p>
+<h3 id="services-logs">Services Logs</h3>
+<p>For the SSHD logs, we simply add a pipe and a <code>grep</code> command with the &ldquo;sshd&rdquo; flag. We can also perform this search with CRON and SUDO for finding which entries interest us more.</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cat auth.log | grep <span style="color:#00afaf">&#34;sshd&#34;</span> 
+Mar <span style="color:#00afaf">28</span> 11:27:03 x230 sshd[2168909]: Accepted password <span style="color:#5f8700">for</span> docker from 192.168.1.31 port <span style="color:#00afaf">36254</span> ssh2
+Mar <span style="color:#00afaf">28</span> 11:27:03 x230 sshd[2168909]: pam_unix(sshd:session): session opened <span style="color:#5f8700">for</span> user docker(<span style="color:#0087ff">uid</span>=1000) by (<span style="color:#0087ff">uid</span>=0)
+...
+</code></pre></div><p>We can also print the first and last entry:</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cat auth.log | grep <span style="color:#00afaf">&#34;sshd&#34;</span> | awk <span style="color:#00afaf">&#39;NR==1; END{print}&#39;</span>
+Mar <span style="color:#00afaf">28</span> 11:27:03 x230 sshd[2168909]: Accepted password <span style="color:#5f8700">for</span> docker from 192.168.1.31 port <span style="color:#00afaf">36254</span> ssh2
+Mar <span style="color:#00afaf">28</span> 13:31:12 x230 sshd[2758419]: PAM <span style="color:#00afaf">1</span> more authentication failure; <span style="color:#0087ff">logname</span>= <span style="color:#0087ff">uid</span>=<span style="color:#00afaf">0</span> <span style="color:#0087ff">euid</span>=<span style="color:#00afaf">0</span> <span style="color:#0087ff">tty</span>=ssh <span style="color:#0087ff">ruser</span>= <span style="color:#0087ff">rhost</span>=192.168.1.31  <span style="color:#0087ff">user</span>=docker
+</code></pre></div><p>As said before, the <code>auth.log</code> file contains &ldquo;<code>sudo</code>&rdquo; logs for users using the sudo command. This can be interesting if you are looking to see if a user is trying to execute commands as root with or without permissions.</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cat auth.log | grep <span style="color:#00afaf">&#34;sudo&#34;</span>
+Mar <span style="color:#00afaf">28</span> 11:27:21 x230 sudo:   docker : user NOT in sudoers ; <span style="color:#0087ff">TTY</span>=pts/3 ; <span style="color:#0087ff">PWD</span>=/var/log ; <span style="color:#0087ff">USER</span>=root ; <span style="color:#0087ff">COMMAND</span>=/usr/bin/cat auth.log
+</code></pre></div><p>Or the CRON tasks (a UNIX utility which performs commands a scheduled intervals).</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cat auth.log | grep <span style="color:#00afaf">&#34;cron&#34;</span>
+Mar <span style="color:#00afaf">27</span> 00:09:01 x230 CRON[756922]: pam_unix(cron:session): session opened <span style="color:#5f8700">for</span> user root(<span style="color:#0087ff">uid</span>=0) by (<span style="color:#0087ff">uid</span>=0)
+Mar <span style="color:#00afaf">27</span> 00:09:01 x230 CRON[756922]: pam_unix(cron:session): session closed <span style="color:#5f8700">for</span> user root
+Mar <span style="color:#00afaf">27</span> 00:17:01 x230 CRON[794889]: pam_unix(cron:session): session opened <span style="color:#5f8700">for</span> user root(<span style="color:#0087ff">uid</span>=0) by (<span style="color:#0087ff">uid</span>=0)
+Mar <span style="color:#00afaf">27</span> 00:17:02 x230 CRON[794889]: pam_unix(cron:session): session closed <span style="color:#5f8700">for</span> user root
+Mar <span style="color:#00afaf">27</span> 00:39:01 x230 CRON[899453]: pam_unix(cron:session): session opened <span style="color:#5f8700">for</span> user root(<span style="color:#0087ff">uid</span>=0) by (<span style="color:#0087ff">uid</span>=0)
+Mar <span style="color:#00afaf">27</span> 00:39:01 x230 CRON[899453]: pam_unix(cron:session): session closed <span style="color:#5f8700">for</span> user root
+...
+</code></pre></div><h2 id="sshd-logs-parse">SSHD Logs Parse</h2>
+<p>Now we move on to the section that interests us the most : Parse and analyze SSHD logs to find users login attempts and malicious requests on the SSH protocol like port scanners.</p>
+<h3 id="logins">Logins</h3>
+<p>On logs file with thousands of entries, it&rsquo;s complicated to find malicious traffic. But with a parsing technique we can extract the data we are most interested in.</p>
+<p>First, we can print the successful logins with this command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cat auth.log | grep sshd | grep <span style="color:#00afaf">&#39;session opened&#39;</span>
+Mar <span style="color:#00afaf">28</span> 11:27:03 x230 sshd[2168909]: pam_unix(sshd:session): session opened <span style="color:#5f8700">for</span> user docker(<span style="color:#0087ff">uid</span>=1000) by (<span style="color:#0087ff">uid</span>=0)
+</code></pre></div><p>The server only had one successful logins over 24 days. They are all from me as I did not create any other users for the system.</p>
+<p>We can also print the number of different IP addresses which had successful logins:</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cat auth.log | grep -oE <span style="color:#00afaf">&#39;.*Accepted publickey.*&#39;</span> | awk <span style="color:#00afaf">&#39;{ print $11 }&#39;</span> | sort | uniq
+</code></pre></div><p>On the otherside, we can retrieve failed logins attempts for invalid users (local user not existing).</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cat auth.log | grep <span style="color:#00afaf">&#39;Invalid user&#39;</span> | wc -l
+</code></pre></div><p>We can also get the number of invalid usernames used in logins attempts:</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cat auth.log | grep -oE <span style="color:#00afaf">&#39;Invalid user.*&#39;</span> | awk <span style="color:#00afaf">&#39;{ print $3 }&#39;</span> | sort | uniq | wc -l
+</code></pre></div><p>But also existing user with a bad password (maybe a mistake or brute-force if many attempts)</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cat auth.log | grep sshd | grep <span style="color:#00afaf">&#39;Failed password&#39;</span>
+Mar <span style="color:#00afaf">28</span> 13:30:55 x230 sshd[2758419]: Failed password <span style="color:#5f8700">for</span> docker from 192.168.1.31 port <span style="color:#00afaf">36256</span> ssh2
+Mar <span style="color:#00afaf">28</span> 13:30:59 x230 sshd[2758419]: Failed password <span style="color:#5f8700">for</span> docker from 192.168.1.31 port <span style="color:#00afaf">36256</span> ssh2
+</code></pre></div><h3 id="port-scanners">Port Scanners</h3>
+<p>Port scanners usually connect to a port and immediately disconnect. This connection type is recorded in the log as &ldquo;Received disconnect&rdquo;.
+So we put this record in the grep command.</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cat auth.log | grep -oE <span style="color:#00afaf">&#39;Received disconnect.*&#39;</span> | wc -l
+</code></pre></div><p>This command return the number of port scanning attempts detected.</p>
+<p>If your server is expose on the Internet, you can print the public IP addresses that did port scanning:</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cat auth.log | grep -oE <span style="color:#00afaf">&#39;Received disconnect.*&#39;</span> | awk <span style="color:#00afaf">&#39;{ print $4 }&#39;</span> | sort | uniq | wc -l
+</code></pre></div><h2 id="conclusion">Conclusion</h2>
+<p>We have seen the basics of SSHD log parse, an analyze can be easily complete manually with the commands below, in case investigation or simply find if your server receive unintended connections. For those who wonder what countermeasures we can add to counter bruteforce attacks (ports and login/password), I invite you to check fail2ban, a very powerful and free tool very well known and used in companies.</p>
+<p>You can now practice with this good challenge on the BTLO platform: <a href="https://blueteamlabs.online/home/challenge/17">https://blueteamlabs.online/home/challenge/17</a> (active challenge, don&rsquo;t post any write-ups)</p>
+<hr>
+<p>Sources:</p>
+<ul>
+<li>My knowledge</li>
+<li><a href="https://redgreenrepeat.com/2017/02/17/parsing-ssh-logs-basics/">https://redgreenrepeat.com/2017/02/17/parsing-ssh-logs-basics/</a></li>
+</ul>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

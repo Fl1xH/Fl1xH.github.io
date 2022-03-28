@@ -2,14 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://fl1xh.github.io/tags/blueteam/</loc>
+    <lastmod>2022-03-28T11:05:32+02:00</lastmod>
+  </url><url>
     <loc>https://fl1xh.github.io/tags/cheat-sheet/</loc>
-    <lastmod>2022-03-16T22:43:04+01:00</lastmod>
+    <lastmod>2022-03-28T11:05:32+02:00</lastmod>
+  </url><url>
+    <loc>https://fl1xh.github.io/tags/digital-forensics/</loc>
+    <lastmod>2022-03-28T11:05:32+02:00</lastmod>
   </url><url>
     <loc>https://fl1xh.github.io/</loc>
-    <lastmod>2022-03-16T22:43:04+01:00</lastmod>
+    <lastmod>2022-03-28T11:05:32+02:00</lastmod>
   </url><url>
     <loc>https://fl1xh.github.io/posts/</loc>
-    <lastmod>2022-03-16T22:43:04+01:00</lastmod>
+    <lastmod>2022-03-28T11:05:32+02:00</lastmod>
+  </url><url>
+    <loc>https://fl1xh.github.io/posts/sshd_parse_forensics/</loc>
+    <lastmod>2022-03-28T11:05:32+02:00</lastmod>
+  </url><url>
+    <loc>https://fl1xh.github.io/tags/</loc>
+    <lastmod>2022-03-28T11:05:32+02:00</lastmod>
   </url><url>
     <loc>https://fl1xh.github.io/posts/scp_cheat_sheet/</loc>
     <lastmod>2022-03-16T22:43:04+01:00</lastmod>
@@ -17,19 +29,10 @@
     <loc>https://fl1xh.github.io/tags/sysadmin/</loc>
     <lastmod>2022-03-16T22:43:04+01:00</lastmod>
   </url><url>
-    <loc>https://fl1xh.github.io/tags/</loc>
-    <lastmod>2022-03-16T22:43:04+01:00</lastmod>
-  </url><url>
     <loc>https://fl1xh.github.io/tags/redteam/</loc>
     <lastmod>2022-03-16T14:34:07+01:00</lastmod>
   </url><url>
     <loc>https://fl1xh.github.io/posts/reverse_shell_cheat_sheet/</loc>
-    <lastmod>2022-03-16T14:34:07+01:00</lastmod>
-  </url><url>
-    <loc>https://fl1xh.github.io/tags/test/</loc>
-    <lastmod>2022-03-16T14:34:07+01:00</lastmod>
-  </url><url>
-    <loc>https://fl1xh.github.io/posts/test.fr/</loc>
     <lastmod>2022-03-16T14:34:07+01:00</lastmod>
   </url><url>
     <loc>https://fl1xh.github.io/posts/creating-a-new-theme/</loc>

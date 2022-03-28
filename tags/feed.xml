@@ -6,13 +6,31 @@
     <description>Recent content in Tags on Fl1x&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Wed, 16 Mar 2022 22:43:04 +0100</lastBuildDate><atom:link href="https://fl1xh.github.io/tags/feed.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 28 Mar 2022 11:05:32 +0200</lastBuildDate><atom:link href="https://fl1xh.github.io/tags/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BlueTeam</title>
+      <link>https://fl1xh.github.io/tags/blueteam/</link>
+      <pubDate>Mon, 28 Mar 2022 11:05:32 +0200</pubDate>
+      
+      <guid>https://fl1xh.github.io/tags/blueteam/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Cheat-Sheet</title>
       <link>https://fl1xh.github.io/tags/cheat-sheet/</link>
-      <pubDate>Wed, 16 Mar 2022 22:43:04 +0100</pubDate>
+      <pubDate>Mon, 28 Mar 2022 11:05:32 +0200</pubDate>
       
       <guid>https://fl1xh.github.io/tags/cheat-sheet/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Digital Forensics</title>
+      <link>https://fl1xh.github.io/tags/digital-forensics/</link>
+      <pubDate>Mon, 28 Mar 2022 11:05:32 +0200</pubDate>
+      
+      <guid>https://fl1xh.github.io/tags/digital-forensics/</guid>
       <description></description>
     </item>
     
@@ -31,15 +49,6 @@
       <pubDate>Wed, 16 Mar 2022 14:34:07 +0100</pubDate>
       
       <guid>https://fl1xh.github.io/tags/redteam/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>test</title>
-      <link>https://fl1xh.github.io/tags/test/</link>
-      <pubDate>Wed, 16 Mar 2022 14:34:07 +0100</pubDate>
-      
-      <guid>https://fl1xh.github.io/tags/test/</guid>
       <description></description>
     </item>
     
