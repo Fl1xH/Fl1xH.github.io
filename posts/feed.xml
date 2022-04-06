@@ -6,7 +6,19 @@
     <description>Recent content in Posts on Fl1x&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Mon, 28 Mar 2022 11:05:32 +0200</lastBuildDate><atom:link href="https://fl1xh.github.io/posts/feed.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 06 Apr 2022 12:07:11 +0200</lastBuildDate><atom:link href="https://fl1xh.github.io/posts/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[BTLO] Malicious PowerShell Analysis Writeup</title>
+      <link>https://fl1xh.github.io/posts/wu_btlo_malicious_powershell_analysis/</link>
+      <pubDate>Wed, 06 Apr 2022 12:07:11 +0200</pubDate>
+      
+      <guid>https://fl1xh.github.io/posts/wu_btlo_malicious_powershell_analysis/</guid>
+      <description>Introduction  Question 1 Question 2 Question 3 Question 4 Question 5 Question 6   Conclusion    Introduction As its name suggests, this challenge will allow us to analyze a malicious powershell file.
+CyberChef is often a useful tool for this sort of analysis and we’re gonna use it.
+After downloading the .zip archive, we get a file called &amp;quot;ps_script.txt&amp;quot;.
+Here we get the content with a simple cat command.</description>
+    </item>
+    
     <item>
       <title>SSHD Logs Parse Forensics</title>
       <link>https://fl1xh.github.io/posts/sshd_parse_forensics/</link>

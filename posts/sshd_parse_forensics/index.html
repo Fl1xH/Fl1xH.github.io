@@ -149,7 +149,7 @@ By default, we have the SSHD logs in /var/log/auth." />
 <hr>
 <h2 id="introduction">Introduction</h2>
 <p>In this article, we will see how to analyze SSHD (SSH server-side) logs with basic command-line tools &ldquo;<code>grep</code>, <code>cat</code>, <code>wc</code>, <code>head</code>, <code>tail</code>, <code>awk</code>&rdquo; to potentially find any suspicious requests on our SSH server.</p>
-<p>By default, we have the SSHD logs in <code>/var/log/auth.log</code> . This file contains not only SSHD logs but also CRON, PAM logs.</p>
+<p>By default, we have the SSHD logs in <code>/var/log/auth.log</code> . This file contains not only SSHD logs but also CRON, SUDO and PAM logs.</p>
 <h2 id="basic-log-stats">Basic Log stats</h2>
 <p>First, we can perform basic stats on our log file:</p>
 <ul>
