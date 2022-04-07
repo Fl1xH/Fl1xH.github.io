@@ -6,7 +6,17 @@
     <description>Recent content in Writeups on Fl1x&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Wed, 06 Apr 2022 12:07:11 +0200</lastBuildDate><atom:link href="https://fl1xh.github.io/tags/writeups/feed.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 07 Apr 2022 19:25:46 +0200</lastBuildDate><atom:link href="https://fl1xh.github.io/tags/writeups/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[CyberDefenders] Ulysses Writeup</title>
+      <link>https://fl1xh.github.io/posts/wu_cbd_ulysses/</link>
+      <pubDate>Thu, 07 Apr 2022 19:25:46 +0200</pubDate>
+      
+      <guid>https://fl1xh.github.io/posts/wu_cbd_ulysses/</guid>
+      <description>Background  Question 1 Question 2 Question 3 Question 4 Question 5 Question 6 Question 7 Question 8 Question 9 Question 10 Question 11      Background A Linux server was possibly compromised and a forensic analysis is required in order to understand what really happened. Hard disk dumps and memory snapshots of the machine are provided in order to solve the challenge (https://cyberdefenders.org/blueteam-ctf-challenges/41).
+Challenge Files:</description>
+    </item>
+    
     <item>
       <title>[BTLO] Malicious PowerShell Analysis Writeup</title>
       <link>https://fl1xh.github.io/posts/wu_btlo_malicious_powershell_analysis/</link>

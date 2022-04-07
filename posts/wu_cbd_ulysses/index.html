@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>[CyberDefenders] Ulysses Writeup // Fl1x&#39;s Blog</title>
+    <link rel="shortcut icon" href="/favicon.png" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.92.2" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Fl1x" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://fl1xh.github.io/css/main.min.1bc859b2ee25b22dbec58da2d1c0e9938e1e25416538a5ebf1505ce69f7a3327.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[CyberDefenders] Ulysses Writeup"/>
+<meta name="twitter:description" content="Background  Question 1 Question 2 Question 3 Question 4 Question 5 Question 6 Question 7 Question 8 Question 9 Question 10 Question 11      Background A Linux server was possibly compromised and a forensic analysis is required in order to understand what really happened. Hard disk dumps and memory snapshots of the machine are provided in order to solve the challenge (https://cyberdefenders.org/blueteam-ctf-challenges/41).
+Challenge Files:"/>
+
+    <meta property="og:title" content="[CyberDefenders] Ulysses Writeup" />
+<meta property="og:description" content="Background  Question 1 Question 2 Question 3 Question 4 Question 5 Question 6 Question 7 Question 8 Question 9 Question 10 Question 11      Background A Linux server was possibly compromised and a forensic analysis is required in order to understand what really happened. Hard disk dumps and memory snapshots of the machine are provided in order to solve the challenge (https://cyberdefenders.org/blueteam-ctf-challenges/41).
+Challenge Files:" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fl1xh.github.io/posts/wu_cbd_ulysses/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-04-07T19:25:46+02:00" />
+<meta property="article:modified_time" content="2022-04-07T19:25:46+02:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://fl1xh.github.io/"><img class="app-header-avatar" src="/pp.jpg" alt="Fl1x" /></a>
+      <h1>Fl1x&#39;s Blog</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Posts</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/about/">About</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/redteam/">RedTeam</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/blueteam/">BlueTeam</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/writeups/">Writeups</a>
+      </nav>
+      <p>Here you can find my infosec, sysadmin articles and writeups</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/fl1x_HR" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://github.com/Fl1xH" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+          <a href="https://www.hackthebox.com/home/users/profile/104662" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-box">
+  <title>Hackthebox</title>
+  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line>
+</svg>
+          </a>
+        
+          <a href="https://blueteamlabs.online/public/user/3c4848eb92c6232d4eede7" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-cloud">
+  <title>Blue Teams Labs Online</title>
+  <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+</svg>
+          </a>
+        
+          <a href="https://cyberdefenders.org/profile/Fl1xH" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-shield">
+  <title>Cyberdefenders.org</title>
+  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+</svg>
+          </a>
+        
+          <a href="https://fl1xh.github.io/feed.xml" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-rss">
+  <title>RSS Feed</title>
+  <path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">[CyberDefenders] Ulysses Writeup</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Apr 7, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          5 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://fl1xh.github.io/tags/writeups/">Writeups</a>
+              <a class="tag" href="https://fl1xh.github.io/tags/blueteam/">BlueTeam</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <hr>
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#background">Background</a>
+      <ul>
+        <li><a href="#question-1">Question 1</a></li>
+        <li><a href="#question-2">Question 2</a></li>
+        <li><a href="#question-3">Question 3</a></li>
+        <li><a href="#question-4">Question 4</a></li>
+        <li><a href="#question-5">Question 5</a></li>
+        <li><a href="#question-6">Question 6</a></li>
+        <li><a href="#question-7">Question 7</a></li>
+        <li><a href="#question-8">Question 8</a></li>
+        <li><a href="#question-9">Question 9</a></li>
+        <li><a href="#question-10">Question 10</a></li>
+        <li><a href="#question-11">Question 11</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+<hr>
+<h2 id="background">Background</h2>
+<p>A Linux server was possibly compromised and a forensic analysis is required in order to understand what really happened. Hard disk dumps and memory snapshots of the machine are provided in order to solve the challenge (<a href="https://cyberdefenders.org/blueteam-ctf-challenges/41)">https://cyberdefenders.org/blueteam-ctf-challenges/41)</a>.</p>
+<p><strong>Challenge Files</strong>:</p>
+<ul>
+<li>victoria-v8.kcore.img: memory dump done by dd’ing /proc/kcore.</li>
+<li>victoria-v8.memdump.img: memory dump done with memdump.</li>
+<li>victoria-v8.sda1.img: disk dump.</li>
+<li>Debian5_26.zip: volatility custom Linux profile.</li>
+</ul>
+<p><strong>Supportive Tools</strong>:</p>
+<ul>
+<li><a href="https://github.com/volatilityfoundation/volatility">Volatility</a></li>
+<li><a href="https://www.sweetscape.com/download/010editor/">010 Editor</a></li>
+<li><a href="https://www.autopsy.com/download/">Autopsy</a></li>
+</ul>
+<p>(Here we are going to use Autopsy on linux and Volatility2, on the REMnux distribution).</p>
+<h3 id="question-1">Question 1</h3>
+<p><strong>The attacker was performing a Brute Force attack. What account triggered the alert?</strong></p>
+<p>The first thing that comes to us when we see the question is that the answer must surely be in the logs.
+It says here that we are talking about a brute force attack so we will first look in the SSH logs (<code>/var/log/auth.log</code>) using Autopsy and the disk dump provided (<strong>victoria-v8.sda1.img</strong>).</p>
+<p><img src="/CBD/501fbd1a78c8509677ec3cb17012283a.png" alt="501fbd1a78c8509677ec3cb17012283a.png"></p>
+<p>The content of the file is short and we directly see the user &ldquo;ulysses&rdquo; with a &ldquo;Failed Password for invalid user&rdquo; string at the beggining.</p>
+<p>Answer: <code>ulysses</code></p>
+<h3 id="question-2">Question 2</h3>
+<p><strong>How many were failed attempts there?</strong></p>
+<p>We get the <code>auth.log</code> file on our host machine and we pipe with a &ldquo;failed&rdquo; flag with the grep command.
+Then we sort the number of lines for the failed attempts (without adding the null login).</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cat auth.log | grep -i <span style="color:#00afaf">&#34;failed&#34;</span> | wc -l
+</code></pre></div><p><img src="/CBD/911ab7860515522f6c351b0dc8927705.png" alt="911ab7860515522f6c351b0dc8927705.png"></p>
+<p>Answer: <code>32</code></p>
+<h3 id="question-3">Question 3</h3>
+<p><strong>What kind of system runs on the targeted server?</strong></p>
+<p>The simpliest thing to do here is read the content of the <code>/etc/issue</code> file.</p>
+<p><img src="/CBD/76506664bd82a75e39821bb2e492873b.png" alt="76506664bd82a75e39821bb2e492873b.png"></p>
+<p>That&rsquo;s it, there is our flag.</p>
+<p>Answer: <code>Debian GNU/Linux 5.0</code></p>
+<h3 id="question-4">Question 4</h3>
+<p><strong>What is the victim&rsquo;s IP address?</strong></p>
+<p>Here we can use Volatility to answer, but I found another way to get the IP address, by reading the <code>/var/lib/dhcp3/dhclient.eth0.leases</code> file.</p>
+<p><img src="/CBD/9a7efcd2873358c2caaa60ad9a69c4c1.png" alt="9a7efcd2873358c2caaa60ad9a69c4c1.png"></p>
+<p>We get the IP address from the network interface &ldquo;eth0&rdquo;.</p>
+<p>Answer: <code>192.168.56.102</code></p>
+<h3 id="question-5">Question 5</h3>
+<p><strong>What are the attacker&rsquo;s two IP addresses? Format: comma-separated in ascending order</strong></p>
+<p>Using the &ldquo;linux_netstat&rdquo; module from Volatility we can get the network artifacts (running during the memory capture)</p>
+<p><img src="/CBD/dbd05fb7349b2cd0d563864b5658f8c6.png" alt="dbd05fb7349b2cd0d563864b5658f8c6.png"></p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">vol.py -f victoria-v8.memdump.img --profile=LinuxDebian5_26x86 linux_netstat
+</code></pre></div><p>We can see the connection between the host (found in previous question) and the attackers.</p>
+<p>Answer: <code>192.168.56.1,192.168.56.101</code></p>
+<h3 id="question-6">Question 6</h3>
+<p><strong>What is the &ldquo;nc&rdquo; service PID number that was running on the server?</strong></p>
+<p>The &ldquo;nc&rdquo; programm stand for Netcat, a computer networking utility for reading from and writing to network connections using TCP or UDP. This program is widely used in IT in general, but here its use being to transfer malicious files from the attacker’s machine to the victim&rsquo;s PC.
+We are going to use the &ldquo;linux_pslist&rdquo; module from Volatility to list the processes.</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">vol.py -f victoria-v8.memdump.img --profile=LinuxDebian5_26x86 linux_pslist
+</code></pre></div><p><img src="/CBD/dec8c9cef838391585bfb683a0eb8b0f.png" alt="dec8c9cef838391585bfb683a0eb8b0f.png"></p>
+<p><img src="/CBD/0d05b1263163caf2b24e40bdf562ab96.png" alt="0d05b1263163caf2b24e40bdf562ab96.png"></p>
+<p>And there it is, at the last line with its PID (Process IDentifier).</p>
+<p>Answer: <code>2169</code></p>
+<h3 id="question-7">Question 7</h3>
+<p><strong>What service was exploited to gain access to the system? (one word)</strong></p>
+<p>By listing the processes (this time linux_psaux), we find an unusual process performed by a certain user of a certain group (Uid 101 and Gid 103).
+The name of this service is &ldquo;exim4&rdquo;.</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">vol.py -f victoria-v8.memdump.img --profile=LinuxDebian5_26x86 linux_psaux
+</code></pre></div><p><img src="/CBD/ae2494a39e51e637ed4ecc39887a2659.png" alt="ae2494a39e51e637ed4ecc39887a2659.png"></p>
+<p>To confirm that is the one used to gain access to the system, we run the &ldquo;linux_bash&rdquo; module to recover bash history from bash process memory.</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">vol.py -f victoria-v8.memdump.img --profile=LinuxDebian5_26x86 linux_bash
+</code></pre></div><p><img src="/CBD/exim4.png" alt=""></p>
+<p>We can now confirm our hypothesis on this program used to gain access to the system.</p>
+<p>Answer: <code>exim4</code></p>
+<h3 id="question-8">Question 8</h3>
+<p><strong>What is the CVE number of exploited vulnerability?</strong></p>
+<p>Now that we know which program was used, we need to found the CVE associated to that version uploaded (exim4_4.69-9).</p>
+<p>With a simple Google search, we find the associated CVE.</p>
+<p><img src="/CBD/cve.png" alt=""></p>
+<p>Answer: <code>CVE-2010-4344</code></p>
+<h3 id="question-9">Question 9</h3>
+<p><strong>During this attack, the attacker downloaded two files to the server. Provide the name of the compressed file.</strong></p>
+<p>To answer this question it was necessary to think as an attacker, the bash history and processes not having enough to find the download file.
+In my case, during pentest or Boot2root, I upload my malicious files and scripts to the <code>/dev/shm</code> directory or in the temporary folder <code>/tmp</code>.</p>
+<p>With Autopsy, we navigate through the <code>/tmp</code> directory and found a suspicious archive (<code>.tar</code>). The question deals with a compressed file so everything matches.</p>
+<p><img src="/CBD/cb55718087b9720caa04108867b1714a.png" alt="cb55718087b9720caa04108867b1714a.png"></p>
+<p>We export the file for the last question.</p>
+<p>Answer: <code>rk.tar</code></p>
+<h3 id="question-10">Question 10</h3>
+<p><strong>Two ports were involved in the process of data exfiltration. Provide the port number of the highest one.</strong></p>
+<p>Here we remember the Netcat program was used before to upload the &ldquo;exim&rdquo; package.
+So we ran again Volatility with the &ldquo;linux_bash&rdquo; module.</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">vol.py -f victoria-v8.memdump.img --profile=LinuxDebian5_26x86 linux_bash
+</code></pre></div><p><img src="/CBD/7b692317058f4eaab8e2a2fa88d516a0.png" alt="7b692317058f4eaab8e2a2fa88d516a0.png"></p>
+<p>As we see, the highest one is &ldquo;8888&rdquo; so we can validate this question.</p>
+<p>Answer: <code>8888</code></p>
+<h3 id="question-11">Question 11</h3>
+<p><strong>Which port did the attacker try to block on the firewall?</strong></p>
+<p>On the question 9, we exported an archive &ldquo;rk.tar&rdquo;, let&rsquo;s look at its contents.</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">tar xvf vol1-1.tmp.rk.tar
+</code></pre></div><p><img src="/CBD/6fbcbe4d8c561888ead170c73f345651.png" alt="6fbcbe4d8c561888ead170c73f345651.png"></p>
+<p>An interesting one is a bash script called &ldquo;install.sh&rdquo;, let’s see what it contains.</p>
+<p><img src="/CBD/fef0232c00ed8983678c45d45011600b.png" alt="fef0232c00ed8983678c45d45011600b.png"></p>
+<p>We notice the line with the iptable command (iptables is a user-space utility program that allows a system administrator to configure the IP packet filter rules of the Linux kernel firewall).
+For those who have bases with this tool we see that all packets are drop on port 45295.</p>
+<p>Answer: <code>45295</code></p>
+<p>The challenge is done!</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
