@@ -4,7 +4,7 @@
     <title>SCP Cheat Sheet // Fl1x&#39;s Blog</title>
     <link rel="shortcut icon" href="/favicon.png" />
     <meta charset="utf-8" />
-    <meta name="generator" content="Hugo 0.92.2" />
+    <meta name="generator" content="Hugo 0.104.2" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="Fl1x" />
     <meta name="description" content="" />
@@ -13,10 +13,10 @@
     
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="SCP Cheat Sheet"/>
-<meta name="twitter:description" content="Copying a file to the remote system scp file user@host:/path/to/file	Copying a file from the remote system scp user@host:/path/to/file /local/path/to/file Copying multiple files scp file1 file2 user@host:/path/to/directory	Copying an entire directory scp -r /path/to/directory user@host:/path/to/directory	Conditions -r # transfer directory  -v # see the transfer details -C # copy files with compression -l 800 # limit bandwith with 800 -p # preserving the original attributes of the copied files -P # connection port -q # hidden the output "/>
+<meta name="twitter:description" content="Copying a file to the remote system scp file user@host:/path/to/file	Copying a file from the remote system scp user@host:/path/to/file /local/path/to/file Copying multiple files scp file1 file2 user@host:/path/to/directory	Copying an entire directory scp -r /path/to/directory user@host:/path/to/directory	Conditions -r # transfer directory -v # see the transfer details -C # copy files with compression -l 800 # limit bandwith with 800 -p # preserving the original attributes of the copied files -P # connection port -q # hidden the output "/>
 
     <meta property="og:title" content="SCP Cheat Sheet" />
-<meta property="og:description" content="Copying a file to the remote system scp file user@host:/path/to/file	Copying a file from the remote system scp user@host:/path/to/file /local/path/to/file Copying multiple files scp file1 file2 user@host:/path/to/directory	Copying an entire directory scp -r /path/to/directory user@host:/path/to/directory	Conditions -r # transfer directory  -v # see the transfer details -C # copy files with compression -l 800 # limit bandwith with 800 -p # preserving the original attributes of the copied files -P # connection port -q # hidden the output " />
+<meta property="og:description" content="Copying a file to the remote system scp file user@host:/path/to/file	Copying a file from the remote system scp user@host:/path/to/file /local/path/to/file Copying multiple files scp file1 file2 user@host:/path/to/directory	Copying an entire directory scp -r /path/to/directory user@host:/path/to/directory	Conditions -r # transfer directory -v # see the transfer details -C # copy files with compression -l 800 # limit bandwith with 800 -p # preserving the original attributes of the copied files -P # connection port -q # hidden the output " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://fl1xh.github.io/posts/scp_cheat_sheet/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2022-03-16T22:43:04+01:00" />
@@ -126,22 +126,22 @@
     </header>
     <div class="post-content">
       <h3 id="copying-a-file-to-the-remote-system">Copying a file to the remote system</h3>
-<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">scp file user@host:/path/to/file	
-</code></pre></div><h3 id="copying-a-file-from-the-remote-system">Copying a file from the remote system</h3>
-<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">scp user@host:/path/to/file /local/path/to/file  	
-</code></pre></div><h3 id="copying-multiple-files">Copying multiple files</h3>
-<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">scp file1 file2 user@host:/path/to/directory		
-</code></pre></div><h3 id="copying-an-entire-directory">Copying an entire directory</h3>
-<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">scp -r /path/to/directory user@host:/path/to/directory		
-</code></pre></div><h3 id="conditions">Conditions</h3>
-<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">-r      <span style="color:#4e4e4e"># transfer directory </span>
--v      <span style="color:#4e4e4e"># see the transfer details</span>
--C      <span style="color:#4e4e4e"># copy files with compression</span>
--l <span style="color:#00afaf">800</span>  <span style="color:#4e4e4e"># limit bandwith with 800</span>
--p      <span style="color:#4e4e4e"># preserving the original attributes of the copied files</span>
--P      <span style="color:#4e4e4e"># connection port</span>
--q      <span style="color:#4e4e4e"># hidden the output</span>
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>scp file user@host:/path/to/file	
+</span></span></code></pre></div><h3 id="copying-a-file-from-the-remote-system">Copying a file from the remote system</h3>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>scp user@host:/path/to/file /local/path/to/file  	
+</span></span></code></pre></div><h3 id="copying-multiple-files">Copying multiple files</h3>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>scp file1 file2 user@host:/path/to/directory		
+</span></span></code></pre></div><h3 id="copying-an-entire-directory">Copying an entire directory</h3>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>scp -r /path/to/directory user@host:/path/to/directory		
+</span></span></code></pre></div><h3 id="conditions">Conditions</h3>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>-r      <span style="color:#4e4e4e"># transfer directory </span>
+</span></span><span style="display:flex;"><span>-v      <span style="color:#4e4e4e"># see the transfer details</span>
+</span></span><span style="display:flex;"><span>-C      <span style="color:#4e4e4e"># copy files with compression</span>
+</span></span><span style="display:flex;"><span>-l <span style="color:#00afaf">800</span>  <span style="color:#4e4e4e"># limit bandwith with 800</span>
+</span></span><span style="display:flex;"><span>-p      <span style="color:#4e4e4e"># preserving the original attributes of the copied files</span>
+</span></span><span style="display:flex;"><span>-P      <span style="color:#4e4e4e"># connection port</span>
+</span></span><span style="display:flex;"><span>-q      <span style="color:#4e4e4e"># hidden the output</span>
+</span></span></code></pre></div>
     </div>
     <div class="post-footer">
       

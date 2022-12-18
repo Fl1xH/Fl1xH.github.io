@@ -6,15 +6,27 @@
     <description>Recent content in BlueTeam on Fl1x&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Thu, 07 Apr 2022 19:25:46 +0200</lastBuildDate><atom:link href="https://fl1xh.github.io/tags/blueteam/feed.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 17 Dec 2022 12:40:56 +0100</lastBuildDate><atom:link href="https://fl1xh.github.io/tags/blueteam/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Threat Hunting Phishing Domains in Golang</title>
+      <link>https://fl1xh.github.io/posts/phishing_threat_hunting_go/</link>
+      <pubDate>Sat, 17 Dec 2022 12:40:56 +0100</pubDate>
+      
+      <guid>https://fl1xh.github.io/posts/phishing_threat_hunting_go/</guid>
+      <description>Starting point A few months ago, I decided to focus on Threat Hunting and what tool I could create to hunt myself and find malicious behavior and attackers.
+An idea occurred to me: many people in my entourage asked me if this &amp;ldquo;text message&amp;rdquo; or this &amp;ldquo;email&amp;rdquo; was legit, especially the URL link there. Of course 90% of the time, it was smishing or phishing campaigns.
+After that, I wondered how I could anticipate the attackers.</description>
+    </item>
+    
     <item>
       <title>[CyberDefenders] Ulysses Writeup</title>
       <link>https://fl1xh.github.io/posts/wu_cbd_ulysses/</link>
       <pubDate>Thu, 07 Apr 2022 19:25:46 +0200</pubDate>
       
       <guid>https://fl1xh.github.io/posts/wu_cbd_ulysses/</guid>
-      <description>Background  Question 1 Question 2 Question 3 Question 4 Question 5 Question 6 Question 7 Question 8 Question 9 Question 10 Question 11      Background A Linux server was possibly compromised and a forensic analysis is required in order to understand what really happened. Hard disk dumps and memory snapshots of the machine are provided in order to solve the challenge (https://cyberdefenders.org/blueteam-ctf-challenges/41).
-Challenge Files:</description>
+      <description>Background Question 1 Question 2 Question 3 Question 4 Question 5 Question 6 Question 7 Question 8 Question 9 Question 10 Question 11 Background A Linux server was possibly compromised and a forensic analysis is required in order to understand what really happened. Hard disk dumps and memory snapshots of the machine are provided in order to solve the challenge (https://cyberdefenders.org/blueteam-ctf-challenges/41).
+Challenge Files:
+victoria-v8.kcore.img: memory dump done by dd’ing /proc/kcore.</description>
     </item>
     
     <item>
@@ -23,10 +35,10 @@ Challenge Files:</description>
       <pubDate>Wed, 06 Apr 2022 12:07:11 +0200</pubDate>
       
       <guid>https://fl1xh.github.io/posts/wu_btlo_malicious_powershell_analysis/</guid>
-      <description>Introduction  Question 1 Question 2 Question 3 Question 4 Question 5 Question 6   Conclusion    Introduction As its name suggests, this challenge will allow us to analyze a malicious powershell file.
+      <description>Introduction Question 1 Question 2 Question 3 Question 4 Question 5 Question 6 Conclusion Introduction As its name suggests, this challenge will allow us to analyze a malicious powershell file.
 CyberChef is often a useful tool for this sort of analysis and we’re gonna use it.
 After downloading the .zip archive, we get a file called &amp;quot;ps_script.txt&amp;quot;.
-Here we get the content with a simple cat command.</description>
+Here we get the content with a simple cat command. POwersheLL -w hidden means that a hidden PowerShell window (invisible to the user) is opened, and -ENCOD, shorthand for encoded shows that the script was encoded with Base64.</description>
     </item>
     
     <item>
@@ -35,8 +47,8 @@ Here we get the content with a simple cat command.</description>
       <pubDate>Mon, 28 Mar 2022 11:05:32 +0200</pubDate>
       
       <guid>https://fl1xh.github.io/posts/sshd_parse_forensics/</guid>
-      <description>Introduction Basic Log stats  Number of log entries Services Logs   SSHD Logs Parse  Logins Port Scanners   Conclusion    Introduction In this article, we will see how to analyze SSHD (SSH server-side) logs with basic command-line tools &amp;ldquo;grep, cat, wc, head, tail, awk&amp;rdquo; to potentially find any suspicious requests on our SSH server.
-By default, we have the SSHD logs in /var/log/auth.</description>
+      <description>Introduction Basic Log stats Number of log entries Services Logs SSHD Logs Parse Logins Port Scanners Conclusion Introduction In this article, we will see how to analyze SSHD (SSH server-side) logs with basic command-line tools &amp;ldquo;grep, cat, wc, head, tail, awk&amp;rdquo; to potentially find any suspicious requests on our SSH server.
+By default, we have the SSHD logs in /var/log/auth.log . This file contains not only SSHD logs but also CRON, SUDO and PAM logs.</description>
     </item>
     
   </channel>

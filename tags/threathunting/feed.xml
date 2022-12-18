@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ThreatHunting on Fl1x&#39;s Blog</title>
+    <link>https://fl1xh.github.io/tags/threathunting/</link>
+    <description>Recent content in ThreatHunting on Fl1x&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Sat, 17 Dec 2022 12:40:56 +0100</lastBuildDate><atom:link href="https://fl1xh.github.io/tags/threathunting/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Threat Hunting Phishing Domains in Golang</title>
+      <link>https://fl1xh.github.io/posts/phishing_threat_hunting_go/</link>
+      <pubDate>Sat, 17 Dec 2022 12:40:56 +0100</pubDate>
+      
+      <guid>https://fl1xh.github.io/posts/phishing_threat_hunting_go/</guid>
+      <description>Starting point A few months ago, I decided to focus on Threat Hunting and what tool I could create to hunt myself and find malicious behavior and attackers.
+An idea occurred to me: many people in my entourage asked me if this &amp;ldquo;text message&amp;rdquo; or this &amp;ldquo;email&amp;rdquo; was legit, especially the URL link there. Of course 90% of the time, it was smishing or phishing campaigns.
+After that, I wondered how I could anticipate the attackers.</description>
+    </item>
+    
+  </channel>
+</rss>

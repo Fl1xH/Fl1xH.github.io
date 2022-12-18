@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Threat Hunting Phishing Domains in Golang // Fl1x&#39;s Blog</title>
+    <link rel="shortcut icon" href="/favicon.png" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.104.2" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Fl1x" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://fl1xh.github.io/css/main.min.1bc859b2ee25b22dbec58da2d1c0e9938e1e25416538a5ebf1505ce69f7a3327.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Threat Hunting Phishing Domains in Golang"/>
+<meta name="twitter:description" content="Starting point A few months ago, I decided to focus on Threat Hunting and what tool I could create to hunt myself and find malicious behavior and attackers.
+An idea occurred to me: many people in my entourage asked me if this &ldquo;text message&rdquo; or this &ldquo;email&rdquo; was legit, especially the URL link there. Of course 90% of the time, it was smishing or phishing campaigns.
+After that, I wondered how I could anticipate the attackers."/>
+
+    <meta property="og:title" content="Threat Hunting Phishing Domains in Golang" />
+<meta property="og:description" content="Starting point A few months ago, I decided to focus on Threat Hunting and what tool I could create to hunt myself and find malicious behavior and attackers.
+An idea occurred to me: many people in my entourage asked me if this &ldquo;text message&rdquo; or this &ldquo;email&rdquo; was legit, especially the URL link there. Of course 90% of the time, it was smishing or phishing campaigns.
+After that, I wondered how I could anticipate the attackers." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fl1xh.github.io/posts/phishing_threat_hunting_go/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-12-17T12:40:56+01:00" />
+<meta property="article:modified_time" content="2022-12-17T12:40:56+01:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://fl1xh.github.io/"><img class="app-header-avatar" src="/pp.jpg" alt="Fl1x" /></a>
+      <h1>Fl1x&#39;s Blog</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Posts</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/about/">About</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/redteam/">RedTeam</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/blueteam/">BlueTeam</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/writeups/">Writeups</a>
+      </nav>
+      <p>Here you can find my infosec, sysadmin articles and writeups</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/fl1x_HR" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://github.com/Fl1xH" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+          <a href="https://www.hackthebox.com/home/users/profile/104662" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-box">
+  <title>Hackthebox</title>
+  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line>
+</svg>
+          </a>
+        
+          <a href="https://blueteamlabs.online/public/user/3c4848eb92c6232d4eede7" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-cloud">
+  <title>Blue Teams Labs Online</title>
+  <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+</svg>
+          </a>
+        
+          <a href="https://cyberdefenders.org/profile/Fl1xH" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-shield">
+  <title>Cyberdefenders.org</title>
+  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+</svg>
+          </a>
+        
+          <a href="https://fl1xh.github.io/feed.xml" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-rss">
+  <title>RSS Feed</title>
+  <path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Threat Hunting Phishing Domains in Golang</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Dec 17, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          6 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://fl1xh.github.io/tags/blueteam/">BlueTeam</a>
+              <a class="tag" href="https://fl1xh.github.io/tags/threathunting/">ThreatHunting</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <hr>
+<h2 id="starting-point">Starting point</h2>
+<p>A few months ago, I decided to focus on Threat Hunting and what tool I could create to hunt myself and find malicious behavior and attackers.</p>
+<p>An idea occurred to me: many people in my entourage asked me if this &ldquo;text message&rdquo; or this &ldquo;email&rdquo; was legit, especially the URL link there. Of course 90% of the time, it was smishing or phishing campaigns.</p>
+<p>After that, I wondered how I could anticipate the attackers. Here is the reasoning I had: Most phishing sites have domains that have been registered very recently with a registrar (usually less than 2 weeks). As a result, I already have a lead on which element I will rely on to detect potential phishing domains.</p>
+<p>Then I started thinking about how to do it and in what language.</p>
+<h3 id="methodology">Methodology</h3>
+<p>Here is my point of view:</p>
+<ul>
+<li>First, I need to get feed of newly registered domains</li>
+<li>Domains databases do not exceed 30 days</li>
+<li>Grep keywords of tiposquatting legit domains which are most often usurped</li>
+<li>Test if domains responds to HTTP/S requests (WEB Server Online ?)</li>
+<li>Report those which are malicious on online CTI platforms</li>
+</ul>
+<h3 id="newly-registered-domains-feed">Newly Registered Domains Feed</h3>
+<p>There is the difficult part: Get a good and a full feed for free ! :(</p>
+<p>For now, I used <a href="https://whoisds.com/newly-registered-domains">WHOISDS</a> which have ~100k entries of new registered domains everyday in the sample they provided to download completely free.</p>
+<p>During the writing of this article, I fount out <a href="https://www.afnic.fr/produits-services/services-associes/donnees-partagees/">Afnic</a> data share for all new domains registered with the TLD <code>.fr</code>. (Thanks to <a href="https://twitter.com/_mikolajek_?s=20&amp;t=IIYPHERC5Oick23v5ht3og">@<em>mikolajek</em></a>).</p>
+<p>In the future, a richer data source should be found (ongoing).</p>
+<h3 id="programming">Programming</h3>
+<p>Don&rsquo;t ask why but I choose Golang for this project :)
+This is also the first time I use this programming language and I already love it!</p>
+<p>(I&rsquo;m using the 1.19 version of Golang).</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#4e4e4e"># go version</span>
+</span></span><span style="display:flex;"><span>go version go1.19.2 linux/amd64
+</span></span></code></pre></div><h4 id="catch-typosquat">Catch TypoSquat</h4>
+<p>The goal is to pass keywords of legitimate services like &ldquo;Netflix&rdquo; or &ldquo;Chronopost&rdquo; or everything you want and all the domains matching are printed in output.</p>
+<p>The best way for doing it I found is to use Regex (also very fast).</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#d75f00">package</span> main
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#d75f00">import</span> (
+</span></span><span style="display:flex;"><span>  <span style="color:#00afaf">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#00afaf">&#34;bufio&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#00afaf">&#34;os&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#00afaf">&#34;regexp&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#00afaf">&#34;flag&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#4e4e4e">// List of keywords we want to find from domains file using regex
+</span></span></span><span style="display:flex;"><span><span style="color:#4e4e4e"></span><span style="color:#0087ff">var</span> domains = regexp.<span style="color:#0087ff">MustCompile</span>(<span style="color:#00afaf">`gmail|paypal|amazon|facebook|icloud|apple|outlook|hotmail|twitter|whatsapp|telegram|netflix|ameli|cpf|pole-emploi|vitale|orange|banque|sfr|postale|paiement|payment|impot|client`</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#0087ff">func</span> <span style="color:#0087ff">main</span>() {
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#4e4e4e">// flag argparse for options (-f and -h)
+</span></span></span><span style="display:flex;"><span><span style="color:#4e4e4e"></span>  <span style="color:#0087ff">var</span> file_urls <span style="color:#af0000">string</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0087ff">var</span> file_output <span style="color:#af0000">string</span>
+</span></span><span style="display:flex;"><span>  flag.<span style="color:#0087ff">StringVar</span>(&amp;file_urls, <span style="color:#00afaf">&#34;f&#34;</span>, <span style="color:#00afaf">&#34;&#34;</span>, <span style="color:#00afaf">&#34;url file to test&#34;</span>)
+</span></span><span style="display:flex;"><span>  flag.<span style="color:#0087ff">StringVar</span>(&amp;file_output, <span style="color:#00afaf">&#34;o&#34;</span>, <span style="color:#00afaf">&#34;&#34;</span>, <span style="color:#00afaf">&#34;file name output&#34;</span>)
+</span></span><span style="display:flex;"><span>  flag.<span style="color:#0087ff">Parse</span>()
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#4e4e4e">// Opening domains text file in input with the -f options parameter 
+</span></span></span><span style="display:flex;"><span><span style="color:#4e4e4e"></span>  urls, err := os.<span style="color:#0087ff">Open</span>(file_urls)
+</span></span><span style="display:flex;"><span>  <span style="color:#5f8700">if</span> err != <span style="color:#d75f00">nil</span> {
+</span></span><span style="display:flex;"><span>    fmt.<span style="color:#0087ff">Println</span>(<span style="color:#00afaf">&#34;You need to add your CSV file with the -f parameter&#34;</span>)
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#4e4e4e">// Output to a file options (here creation if there is a -o parameter)
+</span></span></span><span style="display:flex;"><span><span style="color:#4e4e4e"></span>  file_out, _ := os.<span style="color:#0087ff">Create</span>(file_output)
+</span></span><span style="display:flex;"><span>  <span style="color:#5f8700">defer</span> file_out.<span style="color:#0087ff">Close</span>()
+</span></span><span style="display:flex;"><span>  <span style="color:#5f8700">if</span> err != <span style="color:#d75f00">nil</span> {
+</span></span><span style="display:flex;"><span>    fmt.<span style="color:#0087ff">Println</span>(<span style="color:#00afaf">&#34;[OPTIONAL] You need to add the name of output file with the -o parameter&#34;</span>)
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#4e4e4e">// Now the main part of the program 
+</span></span></span><span style="display:flex;"><span><span style="color:#4e4e4e"></span>  <span style="color:#4e4e4e">// Loop for each lines of the file
+</span></span></span><span style="display:flex;"><span><span style="color:#4e4e4e"></span>  list_urls := bufio.<span style="color:#0087ff">NewScanner</span>(urls)
+</span></span><span style="display:flex;"><span>  <span style="color:#5f8700">for</span> list_urls.<span style="color:#0087ff">Scan</span>() {
+</span></span><span style="display:flex;"><span>    line := list_urls.<span style="color:#0087ff">Text</span>()
+</span></span><span style="display:flex;"><span>    <span style="color:#5f8700">if</span> <span style="color:#0087ff">len</span>(line) == <span style="color:#00afaf">0</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#4e4e4e">// skip blank lines
+</span></span></span><span style="display:flex;"><span><span style="color:#4e4e4e"></span>      <span style="color:#5f8700">continue</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#4e4e4e">// Print for domains contains one of keyword pattern from the regex variable
+</span></span></span><span style="display:flex;"><span><span style="color:#4e4e4e"></span>    <span style="color:#5f8700">if</span> domains.<span style="color:#0087ff">MatchString</span>(line) {
+</span></span><span style="display:flex;"><span>      fmt.<span style="color:#0087ff">Println</span>(<span style="color:#00afaf">&#34;Found ! :&#34;</span>, line)
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>      <span style="color:#4e4e4e">// Write to the output file for domains matching (-o option) 
+</span></span></span><span style="display:flex;"><span><span style="color:#4e4e4e"></span>      fmt.<span style="color:#0087ff">Fprintf</span>(file_out, <span style="color:#00afaf">&#34;%s\n&#34;</span>, line)
+</span></span><span style="display:flex;"><span>      <span style="color:#5f8700">continue</span>
+</span></span><span style="display:flex;"><span>    } 
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Testing out the script:</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#4e4e4e"># go run . -f domains.txt -o output.txt </span>
+</span></span><span style="display:flex;"><span>Found ! : aamazonevisiteurs.fr
+</span></span><span style="display:flex;"><span>Found ! : aamazon.fr
+</span></span><span style="display:flex;"><span>Found ! : aamazon.fr
+</span></span><span style="display:flex;"><span>Found ! : a-ameli.fr
+</span></span><span style="display:flex;"><span>Found ! : abanque.fr
+</span></span><span style="display:flex;"><span>Found ! : abcmonimpot.fr
+</span></span><span style="display:flex;"><span>Found ! : abcmonimpot.fr
+</span></span><span style="display:flex;"><span>Found ! : abeille-assurances-clients.fr
+</span></span><span style="display:flex;"><span>Found ! : abglassfrance.fr
+</span></span><span style="display:flex;"><span>Found ! : abicloud.fr
+</span></span><span style="display:flex;"><span>Found ! : abiesfrance.fr
+</span></span><span style="display:flex;"><span>Found ! : abigmail.fr
+</span></span><span style="display:flex;"><span>Found ! : abmsfrance.fr
+</span></span><span style="display:flex;"><span>Found ! : aboclient.fr
+</span></span><span style="display:flex;"><span>Found ! : abonnement-client.fr
+</span></span><span style="display:flex;"><span>Found ! : abonnement-clients.fr
+</span></span><span style="display:flex;"><span>Found ! : abonnement-netflix.fr
+</span></span><span style="display:flex;"><span>Found ! : abonnement-netflixweb.fr
+</span></span><span style="display:flex;"><span>Found ! : abonnement-orange.fr
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p>Here we go, the script is very fast and we can already see &ldquo;Netflix&rdquo; typosquatting websites.</p>
+<h4 id="web-server-response">WEB Server Response</h4>
+<p>Now we have a good list of domains that potentially usurped legitimate companies and services.</p>
+<p>Then we tested out which domain responds to Web requests (HTTP/S).</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#d75f00">package</span> main
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#d75f00">import</span> (
+</span></span><span style="display:flex;"><span>  <span style="color:#00afaf">&#34;bufio&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#00afaf">&#34;crypto/tls&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#00afaf">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#00afaf">&#34;net/http&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#00afaf">&#34;os&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#00afaf">&#34;time&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#00afaf">&#34;flag&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#0087ff">func</span> <span style="color:#0087ff">main</span>() {
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#4e4e4e">// flag argparse for options (-f and -h)
+</span></span></span><span style="display:flex;"><span><span style="color:#4e4e4e"></span>  <span style="color:#0087ff">var</span> file_urls <span style="color:#af0000">string</span> 
+</span></span><span style="display:flex;"><span>  flag.<span style="color:#0087ff">StringVar</span>(&amp;file_urls, <span style="color:#00afaf">&#34;f&#34;</span>, <span style="color:#00afaf">&#34;&#34;</span>, <span style="color:#00afaf">&#34;url file to test&#34;</span>)
+</span></span><span style="display:flex;"><span>  flag.<span style="color:#0087ff">Parse</span>()
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#4e4e4e">// Opening parsed domains text file from the precedent output script in input with the -f options parameter
+</span></span></span><span style="display:flex;"><span><span style="color:#4e4e4e"></span>  urls, err := os.<span style="color:#0087ff">Open</span>(file_urls)
+</span></span><span style="display:flex;"><span>  <span style="color:#5f8700">if</span> err != <span style="color:#d75f00">nil</span> {
+</span></span><span style="display:flex;"><span>    fmt.<span style="color:#0087ff">Println</span>(<span style="color:#00afaf">&#34;You need to add your CSV file with the -f parameter&#34;</span>)
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#4e4e4e">// Now the main part of the program
+</span></span></span><span style="display:flex;"><span><span style="color:#4e4e4e"></span>  <span style="color:#4e4e4e">// Loop for each lines of the file
+</span></span></span><span style="display:flex;"><span><span style="color:#4e4e4e"></span>  list_urls := bufio.<span style="color:#0087ff">NewScanner</span>(urls)
+</span></span><span style="display:flex;"><span>  <span style="color:#5f8700">for</span> list_urls.<span style="color:#0087ff">Scan</span>() {
+</span></span><span style="display:flex;"><span>    line := list_urls.<span style="color:#0087ff">Text</span>()
+</span></span><span style="display:flex;"><span>    <span style="color:#5f8700">if</span> <span style="color:#0087ff">len</span>(line) == <span style="color:#00afaf">0</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#4e4e4e">// skip blank lines
+</span></span></span><span style="display:flex;"><span><span style="color:#4e4e4e"></span>      <span style="color:#5f8700">continue</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#4e4e4e">// Ignore SSL Auto-Signed Certificate
+</span></span></span><span style="display:flex;"><span><span style="color:#4e4e4e"></span>    transCfg := &amp;http.Transport{
+</span></span><span style="display:flex;"><span>      TLSClientConfig: &amp;tls.Config{
+</span></span><span style="display:flex;"><span>        InsecureSkipVerify: <span style="color:#d75f00">true</span>}, <span style="color:#4e4e4e">// ignore expired SSL certificates
+</span></span></span><span style="display:flex;"><span><span style="color:#4e4e4e"></span>    }
+</span></span><span style="display:flex;"><span>    client := &amp;http.Client{
+</span></span><span style="display:flex;"><span>      Timeout: <span style="color:#00afaf">10</span> * time.Second, <span style="color:#4e4e4e">// Timeout (10 sec for each domain)
+</span></span></span><span style="display:flex;"><span><span style="color:#4e4e4e"></span>      Transport: transCfg,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#4e4e4e">// Get Request for each domain (https)
+</span></span></span><span style="display:flex;"><span><span style="color:#4e4e4e"></span>    resp, err := client.<span style="color:#0087ff">Get</span>(<span style="color:#00afaf">&#34;https://&#34;</span> + line) 
+</span></span><span style="display:flex;"><span>    <span style="color:#5f8700">if</span> err != <span style="color:#d75f00">nil</span> {
+</span></span><span style="display:flex;"><span>      fmt.<span style="color:#0087ff">Println</span>(<span style="color:#00afaf">&#34;No Host :&#34;</span>, line)
+</span></span><span style="display:flex;"><span>      <span style="color:#5f8700">continue</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#4e4e4e">// Get status code
+</span></span></span><span style="display:flex;"><span><span style="color:#4e4e4e"></span>    status_code := resp.StatusCode
+</span></span><span style="display:flex;"><span>    fmt.<span style="color:#0087ff">Println</span>(status_code, <span style="color:#00afaf">&#34;:&#34;</span>, line)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Testing out the script:</p>
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#4e4e4e"># go run . -f output.txt </span>
+</span></span><span style="display:flex;"><span>No Host : abonnement-netflix.fr
+</span></span><span style="display:flex;"><span>No Host : abonnement-netflixweb.fr
+</span></span><span style="display:flex;"><span>No Host : abonnements-netflix.fr
+</span></span><span style="display:flex;"><span>No Host : access-netflix.fr
+</span></span><span style="display:flex;"><span>No Host : account-netflix.fr
+</span></span><span style="display:flex;"><span>No Host : accueil-netflix.fr
+</span></span><span style="display:flex;"><span>No Host : activation-netflix.fr
+</span></span><span style="display:flex;"><span>No Host : aide-netflix.fr
+</span></span><span style="display:flex;"><span><span style="color:#00afaf">200</span> : fans2netflix.fr
+</span></span><span style="display:flex;"><span>No Host : forfait-netflix.fr
+</span></span><span style="display:flex;"><span>No Host : formulaire-aide-netflix.fr
+</span></span><span style="display:flex;"><span>No Host : france-netflix.fr
+</span></span><span style="display:flex;"><span><span style="color:#00afaf">200</span> : freenetflix.fr
+</span></span><span style="display:flex;"><span>No Host : fr-netflix.fr
+</span></span><span style="display:flex;"><span>No Host : fr-supportnetflix.fr
+</span></span><span style="display:flex;"><span>No Host : groupe-mynetflixeurope.fr
+</span></span><span style="display:flex;"><span>No Host : groupe-mynetflix.fr
+</span></span><span style="display:flex;"><span>No Host : groupe-mynetflixfrance.fr
+</span></span><span style="display:flex;"><span>No Host : groupe-mynetflixfr.fr
+</span></span><span style="display:flex;"><span>No Host : help-netflix.fr
+</span></span><span style="display:flex;"><span>No Host : identification-netflix.fr
+</span></span><span style="display:flex;"><span>No Host : inc-netflix.fr
+</span></span><span style="display:flex;"><span>No Host : info-netflix.fr
+</span></span><span style="display:flex;"><span>No Host : infonetflix.fr
+</span></span><span style="display:flex;"><span><span style="color:#00afaf">200</span> : information-netflix.fr
+</span></span><span style="display:flex;"><span>No Host : informations-netflix.fr
+</span></span><span style="display:flex;"><span>No Host : infos-netflix.fr
+</span></span><span style="display:flex;"><span>No Host : ir-netflix.fr
+</span></span><span style="display:flex;"><span>No Host : isnetflixsecure.fr
+</span></span><span style="display:flex;"><span>No Host : login-netflix-connexion.fr
+</span></span><span style="display:flex;"><span>No Host : mon-abonnement-netflix.fr
+</span></span><span style="display:flex;"><span>No Host : monabonnement-netflix.fr
+</span></span><span style="display:flex;"><span>No Host : monabonnementnetflix.fr
+</span></span><span style="display:flex;"><span>No Host : moncomptenetflix-connexion.fr
+</span></span><span style="display:flex;"><span>No Host : mon-compte-netflix.fr
+</span></span><span style="display:flex;"><span>No Host : moncompte-netflix.fr
+</span></span><span style="display:flex;"><span>No Host : moncomptenetflix.fr
+</span></span><span style="display:flex;"><span><span style="color:#00afaf">200</span> : mon-renouvelement-netflix.fr
+</span></span><span style="display:flex;"><span>No Host : mon-renouvellement-netflix.fr
+</span></span><span style="display:flex;"><span><span style="color:#00afaf">200</span> : myaccount-netflix.fr
+</span></span></code></pre></div><p>Most of the domains are actually not responding (maybe because in this example I choose a very recent feed ~1-3 days ago) but we found out some with code 200 (OK Status) !</p>
+<p>I decided to inspect those with code 200 (visually on my browser):</p>
+<p><code>https://information-netflix[.]fr</code></p>
+<p><img src="/THG/501fbd1a78c850967egn3cb17012283a.png" alt=""></p>
+<p>Bingo! We got our first malicious hit on Netflix Phishing website.</p>
+<p>Let&rsquo;s report that to reduce the impact of people falling in the trap.</p>
+<h3 id="reporting">Reporting</h3>
+<p>There are many ways to report phishing websites. Usually I choose <a href="https://phishing-initiative.eu/contrib/">Phishing Initiative</a>,
+developed by the CERT of Orange Cyberdéfense (France). Everyone can report phishing URL and after they do the job to end the malicious website.</p>
+<h3 id="finale-notes">Finale Notes</h3>
+<p>Note that there are the basics for threat hunting phishing website, I&rsquo;m currently working on a more complete project (private Git for now) for great more options and capabilities.</p>
+<p>I wanted to do an &ldquo;intro&rdquo; on this article to show that quickly we can hunt these sites for free.</p>
+<p>Thank you for those who read the article, do not hesitate to contact me by twitter I will answer you with pleasure!</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
