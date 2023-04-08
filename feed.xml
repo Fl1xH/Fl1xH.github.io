@@ -6,7 +6,17 @@
     <description>Recent content on Fl1x&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sat, 17 Dec 2022 12:40:56 +0100</lastBuildDate><atom:link href="https://fl1xh.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 05 Apr 2023 16:16:44 +0200</lastBuildDate><atom:link href="https://fl1xh.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Sandbox Evasion Techniques</title>
+      <link>https://fl1xh.github.io/posts/sandbox_evasion/</link>
+      <pubDate>Wed, 05 Apr 2023 16:16:44 +0200</pubDate>
+      
+      <guid>https://fl1xh.github.io/posts/sandbox_evasion/</guid>
+      <description>Introduction Nowadays malware are becoming more sophisticated. When incidents response team or somebody who wants to analyze malware samples, they usually uses sandbox machines: A “sandbox” environment is an isolated virtual machine in which potentially dangerous software code can run without affecting network resources or local applications. The goal here is to analyze the behavior of the malicious payload/program.
+Sandboxes comes with many tools for malware analysis: Debuggers, memory/disk forensics, static file analyzers, Sysinternals suite,&amp;hellip; I am familiar with some : REMnux, Cuckoo.</description>
+    </item>
+    
     <item>
       <title>Threat Hunting Phishing Domains in Golang</title>
       <link>https://fl1xh.github.io/posts/phishing_threat_hunting_go/</link>

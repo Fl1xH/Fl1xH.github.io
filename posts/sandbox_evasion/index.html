@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Sandbox Evasion Techniques // Fl1x&#39;s Blog</title>
+    <link rel="shortcut icon" href="/favicon.png" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.2">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Fl1x" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://fl1xh.github.io/css/main.min.1bc859b2ee25b22dbec58da2d1c0e9938e1e25416538a5ebf1505ce69f7a3327.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Sandbox Evasion Techniques"/>
+<meta name="twitter:description" content="Introduction Nowadays malware are becoming more sophisticated. When incidents response team or somebody who wants to analyze malware samples, they usually uses sandbox machines: A “sandbox” environment is an isolated virtual machine in which potentially dangerous software code can run without affecting network resources or local applications. The goal here is to analyze the behavior of the malicious payload/program.
+Sandboxes comes with many tools for malware analysis: Debuggers, memory/disk forensics, static file analyzers, Sysinternals suite,&hellip; I am familiar with some : REMnux, Cuckoo."/>
+
+    <meta property="og:title" content="Sandbox Evasion Techniques" />
+<meta property="og:description" content="Introduction Nowadays malware are becoming more sophisticated. When incidents response team or somebody who wants to analyze malware samples, they usually uses sandbox machines: A “sandbox” environment is an isolated virtual machine in which potentially dangerous software code can run without affecting network resources or local applications. The goal here is to analyze the behavior of the malicious payload/program.
+Sandboxes comes with many tools for malware analysis: Debuggers, memory/disk forensics, static file analyzers, Sysinternals suite,&hellip; I am familiar with some : REMnux, Cuckoo." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fl1xh.github.io/posts/sandbox_evasion/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-04-05T16:16:44+02:00" />
+<meta property="article:modified_time" content="2023-04-05T16:16:44+02:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://fl1xh.github.io/"><img class="app-header-avatar" src="/pp.jpg" alt="Fl1x" /></a>
+      <h1>Fl1x&#39;s Blog</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Posts</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/about/">About</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/redteam/">RedTeam</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/blueteam/">BlueTeam</a>
+             | 
+          
+          <a class="app-header-menu-item" href="/tags/writeups/">Writeups</a>
+      </nav>
+      <p>Here you can find my infosec, sysadmin articles and writeups</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/fl1x_HR" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://github.com/Fl1xH" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+          <a href="https://www.hackthebox.com/home/users/profile/104662" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-box">
+  <title>Hackthebox</title>
+  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line>
+</svg>
+          </a>
+        
+          <a href="https://blueteamlabs.online/public/user/3c4848eb92c6232d4eede7" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-cloud">
+  <title>Blue Teams Labs Online</title>
+  <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+</svg>
+          </a>
+        
+          <a href="https://cyberdefenders.org/profile/Fl1xH" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-shield">
+  <title>Cyberdefenders.org</title>
+  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+</svg>
+          </a>
+        
+          <a href="https://fl1xh.github.io/feed.xml" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-rss">
+  <title>RSS Feed</title>
+  <path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Sandbox Evasion Techniques</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Apr 5, 2023
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          4 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://fl1xh.github.io/tags/redteam/">RedTeam</a>
+              <a class="tag" href="https://fl1xh.github.io/tags/anti-vm/">Anti-VM</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <hr>
+<h2 id="introduction">Introduction</h2>
+<p>Nowadays malware are becoming more sophisticated. When incidents response team or somebody who wants to analyze malware samples, they usually uses sandbox machines: A “sandbox” environment is an isolated virtual machine in which potentially dangerous software code can run without affecting network resources or local applications.
+The goal here is to analyze the behavior of the malicious payload/program.</p>
+<p>Sandboxes comes with many tools for malware analysis: Debuggers, memory/disk forensics, static file analyzers, Sysinternals suite,&hellip;
+I am familiar with some : <a href="https://remnux.org/">REMnux</a>, <a href="https://cuckoosandbox.org/">Cuckoo</a>. There are websites sandbox too, for analyzing malware dynamically : <a href="https://any.run/">ANY.RUN</a>, <a href="https://www.hybrid-analysis.com/">Hybrid Analysis</a> &hellip;</p>
+<p>Adversaries don&rsquo;t want their malware analyzed, reversers can found hardcoded informations (IOCs) such as combos login/password, IP, DNS C2 or TTPs! So they need to add functions in their code to detect and avoid virtualization and analysis environments.</p>
+<h2 id="tactics">Tactics</h2>
+<p>A tactic exists in the <strong>MITRE ATT&amp;CK</strong>, refeer as <a href="https://attack.mitre.org/techniques/T1497/">T1497</a>. This is a good starting point reading this to know more about the techniques used by attackers and also the malware IDs using sandbox evasion techniques. 3 sub-techniques (<a href="https://attack.mitre.org/techniques/T1497/001">T1497.001</a>, <a href="https://attack.mitre.org/techniques/T1497/002">T1497.002</a>, <a href="https://attack.mitre.org/techniques/T1497/003">T1497.003</a>)
+are found in the MITRE matrix and we are going to see concrete examples in real scenarios.</p>
+<h3 id="system-checks">System checks</h3>
+<p>Getting system informations can be very usefull to detect a virtual environment.</p>
+<p>Here some informations you can check :</p>
+<ul>
+<li>
+<p><strong>Storage name:</strong> Hard disk drives that use names such as QEMU, VBOX, VIRTUAL HD, and VMWare.</p>
+</li>
+<li>
+<p><strong>Storage size:</strong> Every computers have at least 100Go.</p>
+</li>
+<li>
+<p><strong>Ram size:</strong> Recent computers have at least 4Go.</p>
+</li>
+<li>
+<p><strong>CPU core:</strong> Most computers have at least 4 logical cpu cores.</p>
+</li>
+<li>
+<p><strong>HDD vendor ID:</strong> The vendor ID of the hard disc drive named VBOX or vmware.</p>
+</li>
+<li>
+<p><strong>Audio device:</strong> Lack of audio device in the machine.</p>
+</li>
+<li>
+<p><strong>Screen resolution:</strong> Low resolutions that are not frequently used in modern systems.</p>
+</li>
+<li>
+<p><strong>Username:</strong> Common sandbox usernames such as sandbox, virus, malware, vmware, test, forensics,..</p>
+</li>
+<li>
+<p><strong>Hostname:</strong> Common sandbox names such as cuckoo, sandbox, sample, and malware.</p>
+</li>
+<li>
+<p><strong>MAC addresses:</strong> Specific MAC address prefixes:</p>
+<ul>
+<li>08:00:27 for VirtualBox</li>
+<li>00:05:69 | 00:0C:29 | 00:1C:14 | 00:50:56 for VMWare</li>
+<li>00:16:E3 for Xen</li>
+<li>00:1C:42 for Parallels</li>
+</ul>
+</li>
+<li>
+<p><strong>Network adapter name:</strong> Specific names for network adapters (e.g., Vmware).</p>
+</li>
+<li>
+<p><strong>List of directories:</strong> Certain directories such as &ldquo;oracle\virtualbox guest additions&quot; and &ldquo;VMWare&rdquo;.</p>
+</li>
+<li>
+<p><strong>List of files:</strong> A clean desktop or documents folder or an empty list of recent files.</p>
+</li>
+<li>
+<p><strong>CPUID:</strong> The CPUID that includes the strings such as</p>
+<ul>
+<li>Microsoft Hv for Hyper-V</li>
+<li>KVMKVMKVM for KVM</li>
+<li>prl hyperv for Parallels</li>
+<li>VBoxVBoxVBox for VirtualBox</li>
+<li>VMwareVMware for VMWare</li>
+<li>XenVMMXenVMM for Xen.</li>
+</ul>
+</li>
+<li>
+<p><strong>Basic ping:</strong> Request to an non-existent DNS.</p>
+</li>
+</ul>
+<h3 id="windows-techniques">Windows Techniques</h3>
+<p>There are so many informations you can check on windows systems to detect if it&rsquo;s a virtual environment:</p>
+<ul>
+<li>
+<p><strong>Process Name Enumeration:</strong> Known VM processes.</p>
+<ul>
+<li>vboxservices.exe</li>
+<li>vboxservice.exe</li>
+<li>vboxtray.exe</li>
+<li>xenservice.exe</li>
+<li>VMSrvc.exe</li>
+<li>vemusrvc.exe</li>
+<li>VMUSrvc.exe</li>
+<li>qemu-ga.exe</li>
+<li>prl_cc.exe</li>
+<li>prl_tools.exe</li>
+<li>vmtoolsd.exe</li>
+<li>vmwaretray.exe</li>
+<li>vmsrvc.exe</li>
+<li>vmusrvc.exe</li>
+<li>df5serv.exe</li>
+</ul>
+</li>
+<li>
+<p><strong>Registry key value artifacts:</strong> Reg keys values known from VM software</p>
+<ul>
+<li>HARDWARE\DEVICEMAP\Scsi\Scsi Port 0\Scsi Bus 0\Target Id 0\Logical Unit Id 0 (Identifier) (VBOX)</li>
+<li>HARDWARE\DEVICEMAP\Scsi\Scsi Port 0\Scsi Bus 0\Target Id 0\Logical Unit Id 0 (Identifier) (QEMU)</li>
+<li>HARDWARE\Description\System (SystemBiosVersion) (VBOX)</li>
+<li>HARDWARE\Description\System (SystemBiosVersion) (QEMU)</li>
+<li>HARDWARE\Description\System (VideoBiosVersion) (VIRTUALBOX)</li>
+<li>HARDWARE\Description\System (SystemBiosDate) (06/23/99)</li>
+<li>HARDWARE\DEVICEMAP\Scsi\Scsi Port 0\Scsi Bus 0\Target Id 0\Logical Unit Id 0 (Identifier) (VMWARE)</li>
+<li>HARDWARE\DEVICEMAP\Scsi\Scsi Port 1\Scsi Bus 0\Target Id 0\Logical Unit Id 0 (Identifier) (VMWARE)</li>
+<li>HARDWARE\DEVICEMAP\Scsi\Scsi Port 2\Scsi Bus 0\Target Id 0\Logical Unit Id 0 (Identifier) (VMWARE)</li>
+<li>SYSTEM\ControlSet001\Control\SystemInformation (SystemManufacturer) (VMWARE)</li>
+<li>SYSTEM\ControlSet001\Control\SystemInformation (SystemProductName) (VMWARE)</li>
+</ul>
+</li>
+<li>
+<p><strong>Registry Keys artifacts:</strong> Reg keys known from VM software</p>
+<ul>
+<li>HARDWARE\ACPI\DSDT\VBOX__ (VBOX)</li>
+<li>HARDWARE\ACPI\FADT\VBOX__ (VBOX)</li>
+<li>HARDWARE\ACPI\RSDT\VBOX__ (VBOX)</li>
+<li>SOFTWARE\Oracle\VirtualBox Guest Additions (VBOX)</li>
+<li>SYSTEM\ControlSet001\Services\VBoxGuest (VBOX)</li>
+<li>SYSTEM\ControlSet001\Services\VBoxMouse (VBOX)</li>
+<li>SYSTEM\ControlSet001\Services\VBoxService (VBOX)</li>
+<li>SYSTEM\ControlSet001\Services\VBoxSF (VBOX)</li>
+<li>SYSTEM\ControlSet001\Services\VBoxVideo (VBOX)</li>
+<li>SOFTWARE\VMware, Inc.\VMware Tools (VMWARE)</li>
+<li>SOFTWARE\Wine (WINE)</li>
+<li>SOFTWARE\Microsoft\Virtual Machine\Guest\Parameters (HYPER-V)</li>
+<li>SYSTEM\CurrentControlSet\Services\Disk\Enum</li>
+<li>SYSTEM\CurrentControlSet\Enum\IDE</li>
+<li>SYSTEM\CurrentControlSet\Enum\SCSI</li>
+</ul>
+</li>
+<li>
+<p><strong>File system artifacts:</strong> Known file system VM</p>
+<ul>
+<li>&ldquo;system32\drivers\VBoxMouse.sys&rdquo;</li>
+<li>&ldquo;system32\drivers\VBoxGuest.sys&rdquo;</li>
+<li>&ldquo;system32\drivers\VBoxSF.sys&rdquo;</li>
+<li>&ldquo;system32\drivers\VBoxVideo.sys&rdquo;</li>
+<li>&ldquo;system32\vboxdisp.dll&rdquo;</li>
+<li>&ldquo;system32\vboxhook.dll&rdquo;</li>
+<li>&ldquo;system32\vboxmrxnp.dll&rdquo;</li>
+<li>&ldquo;system32\vboxogl.dll&rdquo;</li>
+<li>&ldquo;system32\vboxoglarrayspu.dll&rdquo;</li>
+<li>&ldquo;system32\vboxoglcrutil.dll&rdquo;</li>
+<li>&ldquo;system32\vboxoglerrorspu.dll</li>
+<li>&ldquo;system32\vboxoglfeedbackspu.dll&rdquo;</li>
+<li>&ldquo;system32\vboxoglpackspu.dll&rdquo;</li>
+<li>&ldquo;system32\vboxoglpassthroughspu.dll&rdquo;</li>
+<li>&ldquo;system32\vboxservice.exe&rdquo;</li>
+<li>&ldquo;system32\vboxtray.exe&rdquo;</li>
+<li>&ldquo;system32\VBoxControl.exe&rdquo;</li>
+<li>&ldquo;system32\drivers\vmmouse.sys&rdquo;</li>
+<li>&ldquo;system32\drivers\vmhgfs.sys&rdquo;</li>
+<li>&ldquo;system32\drivers\vm3dmp.sys&rdquo;</li>
+<li>&ldquo;system32\drivers\vmci.sys&rdquo;</li>
+<li>&ldquo;system32\drivers\vmhgfs.sys&rdquo;</li>
+<li>&ldquo;system32\drivers\vmmemctl.sys&rdquo;</li>
+<li>&ldquo;system32\drivers\vmmouse.sys&rdquo;</li>
+<li>&ldquo;system32\drivers\vmrawdsk.sys&rdquo;</li>
+<li>&ldquo;system32\drivers\vmusbmouse.sys&rdquo;</li>
+</ul>
+</li>
+<li>
+<p><strong>Directories artifacts:</strong> Known directories</p>
+<ul>
+<li>&ldquo;%PROGRAMFILES%\oracle\virtualbox guest additions\&rdquo;</li>
+<li>&ldquo;%PROGRAMFILES%\VMWare\&rdquo;</li>
+</ul>
+</li>
+</ul>
+<p>For additional informations about windows VM, there is an awesome Github repo, that is also a tool made by LordNoteworthy called <a href="https://github.com/LordNoteworthy/al-khaser">Al-khaser</a>.</p>
+<h3 id="gnulinux-techniques">GNU/Linux Techniques</h3>
+<p>On GNU/Linux systems too, there is things to check:</p>
+<ul>
+<li>
+<p><strong>DMI Table:</strong> Checks if the DMI table (/sys/class/dmi/id/) contains vendor strings of known VMs.</p>
+<ul>
+<li>&ldquo;innotek&rdquo;</li>
+<li>&ldquo;virtualbox&rdquo;</li>
+<li>&ldquo;vbox&rdquo;</li>
+<li>&ldquo;kvm&rdquo;</li>
+<li>&ldquo;qemu&rdquo;</li>
+<li>&ldquo;vmware&rdquo;</li>
+<li>&ldquo;vmw&rdquo;</li>
+<li>&ldquo;oracle&rdquo;</li>
+<li>&ldquo;xen&rdquo;</li>
+<li>&ldquo;bochs&rdquo;</li>
+<li>&ldquo;parallels&rdquo;</li>
+<li>&ldquo;bhyve&rdquo;</li>
+</ul>
+</li>
+<li>
+<p><strong>Kernel Ring Buffer (/dev/kmsg):</strong> Checks printk messages to see if Linux detected an hypervisor.</p>
+<ul>
+<li>&ldquo;Hypervisor detected&rdquo;</li>
+</ul>
+</li>
+<li>
+<p><strong>VM device tree (/proc/device-tree):</strong> Some virtualization technologies can be detected using /proc/device-tree .</p>
+<ul>
+<li>&ldquo;/proc/device-tree/hypervisor/compatible&rdquo;</li>
+<li>&ldquo;/proc/device-tree/fw-cfg&rdquo;</li>
+</ul>
+</li>
+</ul>
+<h2 id="final-notes">Final notes</h2>
+<p>There are so many techniques to detect a virtualization environment. Note that here I focused on Windows and Linux environments but there are also others systems like MacOS and you can find more resources and techniques on internet.</p>
+<p>If you want to analyze some malware samples, I advise you to test your virtual machine from those evade script. Otherwise, certains malware will not drop all payloads or block themselves on the current system.</p>
+<p>I will conclude with this excellent blog from CheckPoint&rsquo;s researchers for providing many evasion techniques on their website: <a href="https://evasions.checkpoint.com/">https://evasions.checkpoint.com/</a> .</p>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.picussecurity.com/resource/virtualization/sandbox-evasion-how-attackers-avoid-malware-analysis">https://www.picussecurity.com/resource/virtualization/sandbox-evasion-how-attackers-avoid-malware-analysis</a></li>
+<li><a href="https://github.com/LordNoteworthy/al-khaser">https://github.com/LordNoteworthy/al-khaser</a></li>
+<li><a href="https://github.com/ShellCode33/VM-Detection">https://github.com/ShellCode33/VM-Detection</a></li>
+<li><a href="https://www.cynet.com/attack-techniques-hands-on/malware-anti-vm-techniques/">https://www.cynet.com/attack-techniques-hands-on/malware-anti-vm-techniques/</a></li>
+</ul>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
